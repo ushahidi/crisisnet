@@ -66,13 +66,10 @@ var start = function(db) {
   app.set('view engine', 'html');  
   app.set('layout', 'layout');
   app.set('partials', {});
-  
+  app.engine('html', require('hogan-express'));
   if(process.env.NODE_ENV === "production") {
     app.enable('view cache');
   }
-
-  app.engine('html', require('hogan-express'));
-
 
   /**
    * Application bootstrapping

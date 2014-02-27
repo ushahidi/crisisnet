@@ -5,18 +5,35 @@ var passport = require('passport')
 
 
 var handleTwitter = function(token, tokenSecret, profile, done) {
-  console.log(token);
-  console.log(tokenSecret);
-  console.log(profile);
+  var userData = {
+    fullName: profile.displayName,
+    photos: (function() {
+      if(profile.photos) {
+        return _.map(profile.photos, function(obj) { return obj.value });
+      }
 
-  /*
-  User.findOrCreate(..., function(err, user) {
-    if (err) { return done(err); }
+      return [];
+    }),
+    bio: profile._json.description,
+    locationName: profile._json.location,
+    authProfiles: [
+      {
+        token: token,
+        secret: tokenSecret,
+        provider: profile.provider,
+        username: profile.username,
+        remoteID: profile.id.toString()
+      }
+    ]
+  };
+
+  var promise = User.upsert(userData, ["authProfiles.token", "authProfiles.provider"]);
+  
+  promise.then(function(user) {
     done(null, user);
+  }, function(err) {
+    done(err);
   });
-  */
-
-  done();
 };
 
 

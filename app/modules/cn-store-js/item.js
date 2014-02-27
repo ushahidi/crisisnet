@@ -5,7 +5,8 @@ var mongoose = require('mongoose')
   , _ = require('underscore')
   , _s = require('underscore.string')
   , allowedTags = require('./allowed-tags')
-  , languageCodes = require('./language-codes');
+  , languageCodes = require('./language-codes')
+  , schemaUtils = require("./utils");
 
 
 /**
@@ -102,7 +103,10 @@ var itemSchema = mongoose.Schema({
       /**
        * Note that coordinates should always been longitude, latitude
        */
-      coordinates: Array,
+      coordinates: {
+        index: '2dsphere',
+        type: [Number]
+      },
       /**
        * How accurate are the coordinates? Defined as radius, in meters.
        */
@@ -153,6 +157,11 @@ var itemSchema = mongoose.Schema({
     }
 });
 
+// Copying common methods, because inheriting from a base schema that inherited 
+// from `mongoose.Schema` was annoying.
+schemaUtils.setCommonFuncs("statics", itemSchema);
+schemaUtils.setCommonFuncs("methods", itemSchema);
+
 itemSchema.pre("save",function(next, done) {
     var self = this;
 
@@ -181,74 +190,21 @@ itemSchema.pre("save",function(next, done) {
     next();
 });
 
+itemSchema.pre('save', function (next) {
+  var coords = this.geo.coordinates;
+  if (this.isNew && (Array.isArray(coords) && 0 === coords.length) || this.geo.coordinates === null) {
+    this.geo.coordinates = undefined;
+  }
 
-/**
- * Wrapper for `Item.save` that returns a `Promise` object. This is preferred 
- * over simply called `save` and supplying a callback
- */
-itemSchema.methods.saveP = function() {
-  var that = this;
-  return new Promise(function(resolve, reject) {
-    that.save(function(err, item) {
-      if(err) return reject(err);
+  if (this.isNew && Array.isArray(coords) && 2 === coords.length) {
+    this.geo.coordinates = {
+      type: 'Point',
+      coordinates: coords
+    }
+  }
 
-      resolve(item);
-    })
-  });
-};
-
-
-itemSchema.statics.upsert = function(itemData) {
-  var that = this;
-  return new Promise(function(resolve, reject) {
-    that.findOne(
-      // query conditions
-      {
-        remoteID: itemData.remoteID,
-        source: itemData.source  
-      },
-      // callback
-      function(err, item) {
-        if(err) return reject(err);
-        
-        // we did not find an item matching the query conditions, so make one
-        if(!item) {
-          item = new that(itemData);
-        }
-        // extend the item we found with new data
-        else {
-          _(item).extend(itemData);
-        }
-
-        // return a promise
-        resolve(item.saveP());
-      }
-    );
-  });
-};
-
-/**
- * Take an array of objects that conform to Item schema. Generate a list of 
- * promises, and return the promise object that results from calling `Promise.all` 
- * on the list. This allows the caller to assign a single function to be executed 
- * when all models or saved or an error occurs. 
- *
- * If the save is successful the caller will receive a list of saved model
- * instances.
- *
- * @param {Array} data - List of objects that conform to Item schema
- */
-itemSchema.statics.saveList = function(data) {
-  var that = this;
-  // Create a list of promises. 
-  var funcs = _(data).map(function(item) { 
-    return that.upsert(item);
-  });
-
-  return Promise.all(funcs);
-};
-
-itemSchema.index({ "geo.coordinates": "2d" });
+  next();
+})
 
 var Item = mongoose.model('Item', itemSchema);
 

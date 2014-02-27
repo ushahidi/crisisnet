@@ -3,7 +3,8 @@ var mongoose = require('mongoose')
   , validate = validator.validate
   , Promise = require('promise')
   , _ = require('underscore')
-  , _s = require('underscore.string');
+  , _s = require('underscore.string')
+  , schemaUtils = require("./utils");
 
 // @TODO set autoIndex: false in production
 // http://mongoosejs.com/docs/guide.html#indexes
@@ -34,6 +35,11 @@ var userSchema = mongoose.Schema({
 
 });
 
+// Copying common methods, because inheriting from a base schema that inherited 
+// from `mongoose.Schema` was annoying.
+schemaUtils.setCommonFuncs("statics", userSchema);
+schemaUtils.setCommonFuncs("methods", userSchema);
+
 userSchema.pre("save",function(next, done) {
     var self = this;
 
@@ -42,3 +48,9 @@ userSchema.pre("save",function(next, done) {
 
     next();
 });
+
+var User = mongoose.model('User', userSchema);
+
+module.exports = User;
+
+module.exports

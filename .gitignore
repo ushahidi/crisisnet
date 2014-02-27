@@ -4,4 +4,3 @@ config/staging.json
 .DS_Store
 node_modules
 docs
-stuff

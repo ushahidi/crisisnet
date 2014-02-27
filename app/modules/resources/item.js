@@ -81,11 +81,13 @@ var getAll = function(req, res) {
 
 
 var setupRoutes = function(app, path) {
+  path = "/" + path;
+
   // Get all
-  app.get('/'+path, getAll);
+  app.get(path, getAll);
 
   // Get one
-  app.get('/'+path+'/:id', getSingle);
+  app.get(path+'/:id', getSingle);
 };
 
 

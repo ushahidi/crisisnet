@@ -4,7 +4,9 @@ var express = require('express')
   , mongoose = require('mongoose')
   , _ = require('underscore')
   , logger = require('winston')
-  , resources = require('./modules/resources');
+  , resources = require('./modules/resources')
+  , accounts = require('./modules/accounts')
+  , stylus = require('stylus');
 
 
 var setupDB = function() {
@@ -24,12 +26,65 @@ var start = function(db) {
     headers: ['Content-Type',]
   };
 
+  /**
+   * Server configuration
+   */
+
+  // Session support. This is required for OAuth
+  app.use(express.cookieParser());
+  app.use(express.cookieSession({
+    key: "crisis.net.is.the.bomb",
+    secret: config.sessionSecret,
+    cookie: {
+      maxAge: 2678400000 // 31 days
+    },
+  }));
+
+  
+  // Static assets
+  app.use(stylus.middleware({
+      debug: true
+    , src: __dirname + '/static/stylus/'
+    , dest: __dirname + '/static/css/'
+    , compile: function(str) {
+      return stylus(str).set('compress', true);
+    }
+  }));
+  app.use(express.static(__dirname + '/static'));
+
+  // Parse body for post requests
   app.use(express.bodyParser());
+  
+  // Allow cross-site requests using CORS protocol
   app.use(cors(corsOptions)); 
+  
+  // Request routing!
   app.use(app.router);
+  
+  // Templates
+  app.set('views', __dirname + '/views');
+  app.set('view engine', 'html');  
+  app.set('layout', 'layout');
+  app.set('partials', {});
+  
+  if(process.env.NODE_ENV === "production") {
+    app.enable('view cache');
+  }
 
+  app.engine('html', require('hogan-express'));
+
+
+  /**
+   * Application bootstrapping
+   */
+
+  // Setup routes
   resources.item.setupRoutes(app, "item");
+  accounts.auth.setupRoutes(app, "auth");
+  //accounts.profile.setupRoutes(app, "profile");
 
+
+  // ...and we're off.
   app.listen(8083);
 };
 

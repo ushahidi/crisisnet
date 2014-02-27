@@ -9,7 +9,7 @@
     "staging-server": "NODE_ENV=staging node app/main.js",
     "run-test": "NODE_ENV=test mocha"
   },
-  "dependencies" : {
+  "dependencies": {
     "config": "~0.4.35",
     "nodemon": "0.7.10",
     "underscore": "1.5.1",
@@ -20,7 +20,11 @@
     "promise": "~4.0.0",
     "moment": "~2.5.1",
     "mongoose-validator": "~0.2.2",
-    "underscore.string": "~2.3.3"
+    "underscore.string": "~2.3.3",
+    "hogan-express": "~0.5.2",
+    "stylus": "~0.42.2",
+    "passport-twitter": "~1.0.2",
+    "passport": "~0.2.0"
   },
   "devDependencies": {
     "mocha": "1.13.0",

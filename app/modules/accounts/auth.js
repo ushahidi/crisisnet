@@ -12,6 +12,11 @@ var setupRoutes = function(app, path) {
 
   app.get(path + "/signup", signup);
 
+  app.get(path + '/logout', function(req, res){
+    req.logout();
+    res.redirect(path + "/signup");
+  });
+
   /**
    * Third party Oauth providers. Each provider requires two routes. The first, 
    * `path + '/<provider_name>'` redirects the user to the third party site. 
@@ -22,15 +27,18 @@ var setupRoutes = function(app, path) {
    * party is defined in the `auth-strategies` modules.
    */
 
-  // Send the user to Twitter
-  app.get(path + '/twitter', passport.authenticate('twitter'));
+  // Send the user to the third-party site
+  app.get(path + '/:provider', function(req, res, next) {
+    return passport.authenticate(req.params.provider)(req, res, next);
+  });
 
-  // Twitter sends the user back here
-  app.get(path + '/twitter/callback', 
-    passport.authenticate('twitter', {
+  // Return the user to the callback for the provider
+  app.get(path + '/:provider/callback', function(req, res, next) {
+    passport.authenticate(req.params.provider, {
       successRedirect: "/profile",
-      errorRedirect: "/auth/signup"}));
-  };
+      errorRedirect: "/auth/signup"})(req, res, next);
+  });
+};
 
 
 module.exports = {

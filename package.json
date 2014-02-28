@@ -24,7 +24,9 @@
     "hogan-express": "~0.5.2",
     "stylus": "~0.42.2",
     "passport-twitter": "~1.0.2",
-    "passport": "~0.2.0"
+    "passport": "~0.2.0",
+    "connect-redis": "~1.4.7",
+    "express-form": "~0.10.1"
   },
   "devDependencies": {
     "mocha": "1.13.0",

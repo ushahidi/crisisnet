@@ -1,4 +1,5 @@
 var express = require('express')
+  , RedisStore = require('connect-redis')(express)
   , cors = require('cors')
   , config = require('config')
   , mongoose = require('mongoose')
@@ -22,16 +23,33 @@ var setupDB = function() {
   return db;
 };
 
-passport.serializeUser(function(user, done) {
-    done(null, user.id);
-});
+/**
+ * Passport is the authencation framework used through the application. Sessions 
+ * are required for complex auth workflows (like OAuth), so we need to tell 
+ * passport how users should be identified in the session (`serializeUser`) and 
+ * how the user will be retrieved from the application and provided to the 
+ * route callback as a property of the passed `req` argument. (`deserializeUser`)
+ *
+ * Note that an authenticated user will available at `req.user` in the route
+ * callback. If that property isn't available, then you're dealing with an 
+ * anonymous user.
+ */
+var setupPassport = function() {
+  passport.serializeUser(function(user, done) {
+      done(null, user.id);
+  });
 
-passport.deserializeUser(function(userID, done) {
-    store.User.findOne({_id: userID}, function(err, user) {
-      done(null, user);
-    });
-});
+  passport.deserializeUser(function(userID, done) {
+      store.User.findOne({_id: userID}, function(err, user) {
+        done(null, user);
+      });
+  });
+};
 
+
+/**
+ * Entry point for the application.
+ */
 var start = function(db) {
   var app = express();
   var corsOptions = {
@@ -42,16 +60,17 @@ var start = function(db) {
    * Server configuration
    */
 
+  // Required for authencation module to function properly
+  setupPassport();
+
   // Session support. This is required for OAuth
   app.use(express.cookieParser());
-  app.use(express.cookieSession({
-    key: "crisis.net.is.the.bomb",
+  app.use(express.session({
     secret: config.sessionSecret,
-    cookie: {
-      maxAge: 2678400000 // 31 days
-    },
+    store: new RedisStore({
+      secret: config.sessionSecret
+    })
   }));
-  app.use(express.session({ secret: 'keyboard cat' }));
   app.use(passport.initialize());
   app.use(passport.session());
 
@@ -74,7 +93,7 @@ var start = function(db) {
   app.use(cors(corsOptions)); 
   
   // Request routing!
-  app.use(app.router);
+  // app.use(app.router);
   
   // Templates
   app.set('views', __dirname + '/views');

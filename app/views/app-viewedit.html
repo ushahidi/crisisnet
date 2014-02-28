@@ -1,0 +1,40 @@
+View and edit your app.
+
+{{#message}}
+  {{message}}
+{{/message}}
+
+{{#app}}
+  <form action="/profile/app/{{app.id}}" method="POST" data-abide>
+    <div class="row">
+      <div class="large-12 columns">
+        <label>Name
+          <input required type="text" pattern="[a-zA-Z0-9]+" name="name" 
+          value="{{app.name}}"
+          placeholder="My Awesome App" />
+        </label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="large-12 columns">
+        <label>Description
+          <textarea required name="description" placeholder="It makes difficult things easier">{{app.description}}</textarea>
+        </label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="large-12 columns">
+        <label>URL
+          <input name="url" type="url" 
+          {{#app.url}}value="{{app.url}}"{{/app.url}}
+          placeholder="http://mi-awsmr-apply.io" />
+        </label>
+      </div>
+    </div>
+
+    <button type="submit" class="medium button green">Submit</button>
+
+  </form>
+{{/app}}

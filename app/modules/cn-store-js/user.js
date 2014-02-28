@@ -31,8 +31,18 @@ var userSchema = mongoose.Schema({
   photos: [String],
   fullName: String,
   bio: String,
-  locationName: String
-
+  locationName: String,
+  apps: [
+    {
+      name: String,
+      description: String,
+      url: String,
+      isActive: {
+        type: String,
+        default: true
+      }
+    }
+  ]
 });
 
 // Copying common methods, because inheriting from a base schema that inherited 
@@ -52,5 +62,3 @@ userSchema.pre("save",function(next, done) {
 var User = mongoose.model('User', userSchema);
 
 module.exports = User;
-
-module.exports

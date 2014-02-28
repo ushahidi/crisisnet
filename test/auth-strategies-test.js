@@ -33,7 +33,7 @@ describe('auth handlers', function(){
   describe('github auth', function() {
     it('should trasform data to the correct format', function() {
       var githubProfile = require('./data/github-auth-response.json');
-      strategies.handleTwitter("test", undefined, githubProfile, function(err, user) {
+      strategies.handleGitHub("test", undefined, githubProfile, function(err, user) {
         assert.isNull(err);
         assert.isDefined(user.createdAt);
         assert(user.fullName === "Jonathon Morgan");

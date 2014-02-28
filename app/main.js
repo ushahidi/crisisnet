@@ -6,7 +6,9 @@ var express = require('express')
   , logger = require('winston')
   , resources = require('./modules/resources')
   , accounts = require('./modules/accounts')
-  , stylus = require('stylus');
+  , stylus = require('stylus')
+  , passport = require("passport")
+  , store = require("./modules/cn-store-js");
 
 
 var setupDB = function() {
@@ -19,6 +21,16 @@ var setupDB = function() {
 
   return db;
 };
+
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function(userID, done) {
+    store.User.findOne({_id: userID}, function(err, user) {
+      done(null, user);
+    });
+});
 
 var start = function(db) {
   var app = express();
@@ -39,6 +51,9 @@ var start = function(db) {
       maxAge: 2678400000 // 31 days
     },
   }));
+  app.use(express.session({ secret: 'keyboard cat' }));
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   
   // Static assets
@@ -78,7 +93,7 @@ var start = function(db) {
   // Setup routes
   resources.item.setupRoutes(app, "item");
   accounts.auth.setupRoutes(app, "auth");
-  //accounts.profile.setupRoutes(app, "profile");
+  accounts.profile.setupRoutes(app, "profile");
 
 
   // ...and we're off.

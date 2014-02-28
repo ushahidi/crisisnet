@@ -1,7 +1,12 @@
+
+var viewProfile = function(req, res) {
+  res.render("profile", {user:req.user});
+};
+
 var setupRoutes = function(app, path) {
   path = "/" + path
 
-  // @TODO
+  app.get(path, viewProfile);
 };
 
 

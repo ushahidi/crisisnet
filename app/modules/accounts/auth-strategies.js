@@ -1,7 +1,8 @@
 var passport = require('passport')
   , TwitterStrategy = require('passport-twitter').Strategy
   , config = require('config')
-  , User = require('../cn-store-js').User;
+  , User = require('../cn-store-js').User
+  , _ = require("underscore");
 
 
 var handleTwitter = function(token, tokenSecret, profile, done) {
@@ -13,7 +14,7 @@ var handleTwitter = function(token, tokenSecret, profile, done) {
       }
 
       return [];
-    }),
+    })(),
     bio: profile._json.description,
     locationName: profile._json.location,
     authProfiles: [
@@ -26,7 +27,7 @@ var handleTwitter = function(token, tokenSecret, profile, done) {
       }
     ]
   };
-
+  //done(userData);
   var promise = User.upsert(userData, ["authProfiles.token", "authProfiles.provider"]);
   
   promise.then(function(user) {

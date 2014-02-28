@@ -16,14 +16,6 @@ describe('auth handlers', function(){
     mongoose.connect(config.dbURI, done);
   });
 
-  /*
-  it('should get some data', function(done) {
-    this.timeout(5000);
-    var fb = new Facebook();
-    fb.suck();
-  });
-  */
-
   describe('twitter auth', function() {
     it('should transform data to the correct format', function(){
       // Don't really read files like this. I'm only doing it here because it's 

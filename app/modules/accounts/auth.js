@@ -27,8 +27,9 @@ var setupRoutes = function(app, path) {
 
   // Twitter sends the user back here
   app.get(path + '/twitter/callback', 
-    passport.authenticate('twitter', { successRedirect: '/profile',
-                                       failureRedirect: '/login' }));
+    passport.authenticate('twitter', {
+      successRedirect: "/profile",
+      errorRedirect: "/auth/signup"}));
   };
 
 

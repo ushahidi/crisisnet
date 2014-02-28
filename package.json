@@ -27,7 +27,8 @@
     "passport": "~0.2.0",
     "connect-redis": "~1.4.7",
     "express-form": "~0.10.1",
-    "passport-http-bearer": "~1.0.1"
+    "passport-http-bearer": "~1.0.1",
+    "passport-github": "~0.1.5"
   },
   "devDependencies": {
     "mocha": "1.13.0",

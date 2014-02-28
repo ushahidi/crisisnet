@@ -1,0 +1,45 @@
+{
+    "provider": "github",
+    "id": 543627,
+    "displayName": "Jonathon Morgan",
+    "username": "gati",
+    "profileUrl": "https://github.com/gati",
+    "emails": [
+        {
+            "value": null
+        }
+    ],
+    "_raw": "{\"login\":\"gati\",\"id\":543627,\"avatar_url\":\"https://avatars.githubusercontent.com/u/543627\",\"gravatar_id\":\"5eaf240be5ea83cc5b29656d3a3c202b\",\"url\":\"https://api.github.com/users/gati\",\"html_url\":\"https://github.com/gati\",\"followers_url\":\"https://api.github.com/users/gati/followers\",\"following_url\":\"https://api.github.com/users/gati/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/gati/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/gati/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/gati/subscriptions\",\"organizations_url\":\"https://api.github.com/users/gati/orgs\",\"repos_url\":\"https://api.github.com/users/gati/repos\",\"events_url\":\"https://api.github.com/users/gati/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/gati/received_events\",\"type\":\"User\",\"site_admin\":false,\"name\":\"Jonathon Morgan\",\"company\":\"Good at the Internet\",\"blog\":\"http://goodattheinternet.com\",\"location\":\"Austin\",\"email\":null,\"hireable\":true,\"bio\":\"Good at the Internet turns ideas into interactive applications. We specialize in product strategy, experience design, solution architecture and software engineering -- we nurture, craft and code exceptional web and mobile applications that people love to use.\",\"public_repos\":10,\"public_gists\":2,\"followers\":8,\"following\":22,\"created_at\":\"2011-01-01T20:57:55Z\",\"updated_at\":\"2014-02-28T22:57:15Z\"}",
+    "_json": {
+        "login": "gati",
+        "id": 543627,
+        "avatar_url": "https://avatars.githubusercontent.com/u/543627",
+        "gravatar_id": "5eaf240be5ea83cc5b29656d3a3c202b",
+        "url": "https://api.github.com/users/gati",
+        "html_url": "https://github.com/gati",
+        "followers_url": "https://api.github.com/users/gati/followers",
+        "following_url": "https://api.github.com/users/gati/following{/other_user}",
+        "gists_url": "https://api.github.com/users/gati/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/gati/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/gati/subscriptions",
+        "organizations_url": "https://api.github.com/users/gati/orgs",
+        "repos_url": "https://api.github.com/users/gati/repos",
+        "events_url": "https://api.github.com/users/gati/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/gati/received_events",
+        "type": "User",
+        "site_admin": false,
+        "name": "Jonathon Morgan",
+        "company": "Good at the Internet",
+        "blog": "http://goodattheinternet.com",
+        "location": "Austin",
+        "email": null,
+        "hireable": true,
+        "bio": "Good at the Internet turns ideas into interactive applications. We specialize in product strategy, experience design, solution architecture and software engineering -- we nurture, craft and code exceptional web and mobile applications that people love to use.",
+        "public_repos": 10,
+        "public_gists": 2,
+        "followers": 8,
+        "following": 22,
+        "created_at": "2011-01-01T20:57:55Z",
+        "updated_at": "2014-02-28T22:57:15Z"
+    }
+}

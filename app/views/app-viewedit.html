@@ -5,6 +5,7 @@ View and edit your app.
 {{/message}}
 
 {{#app}}
+  <p>Your app token is {{app.id}}. Use this when making API requests.</p>
   <form action="/profile/app/{{app.id}}" method="POST" data-abide>
     <div class="row">
       <div class="large-12 columns">

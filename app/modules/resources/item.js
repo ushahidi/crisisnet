@@ -1,4 +1,5 @@
-var store = require("../cn-store-js");
+var store = require("../cn-store-js")
+  , passport = require("passport");
 
 var addClause = function(obj, key, str, f) { 
   if(str) obj[key] = f();
@@ -84,10 +85,10 @@ var setupRoutes = function(app, path) {
   path = "/" + path;
 
   // Get all
-  app.get(path, getAll);
+  app.get(path, passport.authenticate('bearer', { session: false }), getAll);
 
   // Get one
-  app.get(path+'/:id', getSingle);
+  app.get(path+'/:id', passport.authenticate('bearer', { session: false }), getSingle);
 };
 
 

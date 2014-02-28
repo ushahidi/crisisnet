@@ -1,4 +1,4 @@
-var strategies = require("./auth-strategies")
+var strategies = require("./social-auth-strategies")
   , passport = require('passport');
 
 var signup = function(req, res) {

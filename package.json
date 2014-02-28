@@ -26,7 +26,8 @@
     "passport-twitter": "~1.0.2",
     "passport": "~0.2.0",
     "connect-redis": "~1.4.7",
-    "express-form": "~0.10.1"
+    "express-form": "~0.10.1",
+    "passport-http-bearer": "~1.0.1"
   },
   "devDependencies": {
     "mocha": "1.13.0",

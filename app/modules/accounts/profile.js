@@ -61,11 +61,11 @@ var viewEditApp = function(req, res) {
 var setupRoutes = function(app, path) {
   path = "/" + path
 
-  app.get(path, authRequired(viewProfile));
-  app.get(path + '/app', authRequired(appForm));
-  app.post(path + '/app', validateAppForm(), authRequired(createApp));
-  app.get(path + '/app/:id', authRequired(viewEditApp));
-  app.post(path + '/app/:id', validateAppForm(), authRequired(viewEditApp));
+  app.get(path, authRequired, viewProfile);
+  app.get(path + '/app', authRequired, appForm);
+  app.post(path + '/app', validateAppForm(), authRequired, createApp);
+  app.get(path + '/app/:id', authRequired, viewEditApp);
+  app.post(path + '/app/:id', validateAppForm(), authRequired, viewEditApp);
 };
 
 

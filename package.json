@@ -4,7 +4,7 @@
   "author": "Jonathon Morgan <jonathon@ushahidi.com>",
   "description": "API for CrisisNET data",
   "scripts": {
-    "dev-server": "NODE_ENV=development nodemon app/main.js",
+    "dev-server": "DEBUG=express:* NODE_ENV=development nodemon app/main.js",
     "prod-server": "NODE_ENV=production node app/main.js",
     "staging-server": "NODE_ENV=staging node app/main.js",
     "run-test": "NODE_ENV=test mocha"

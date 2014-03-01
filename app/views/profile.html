@@ -1,3 +1,11 @@
 <h3>Sup I'm a profile for {{user.fullName}}</h3>
+
+<p>You have authorized the following accounts:</p>
+<ul>
+  {{#user.authProfiles}}
+  <li><a target="_blank" href="http://{{provider}}.com/{{username}}">{{provider}}</a> ({{remoteID}})</li>
+  {{/user.authProfiles}}
+</ul>
+
 <p><a href="/profile/app">Make an app</p>
 <p><a href="/profile/app/1">Edit app 1</p>

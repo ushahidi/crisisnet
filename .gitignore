@@ -4,3 +4,4 @@ config/staging.json
 .DS_Store
 node_modules
 docs
+deploy_config.py

@@ -7,5 +7,11 @@
   {{/user.authProfiles}}
 </ul>
 
+<h3>Apps</h3>
 <p><a href="/profile/app">Make an app</p>
-<p><a href="/profile/app/1">Edit app 1</p>
+
+<ul>
+  {{#user.apps}}
+  <li><a href="/profile/app/{{id}}">{{name}}</a></li>
+  {{/user.apps}}
+</ul>

@@ -3,7 +3,8 @@ import os
 import deploy_config
 
 # Add current directory to path.
-sys.path.append(os.path.dirname(__file__))
+local_dir = os.path.dirname(__file__)
+sys.path.append(local_dir)
 
 from fabric.api import *
 
@@ -20,6 +21,7 @@ def staging():
     env.branch = 'development'
     env.upstart_script = 'crisisnet.conf'
     env.nginx_conf = ''
+    env.settings_file = 'staging.json'
 
 
 @task
@@ -30,6 +32,7 @@ def production():
     env.branch = 'master'
     env.upstart_script = ''
     env.nginx_conf = ''
+    env.settings_file = 'production.json'
 
 
 @task
@@ -101,8 +104,18 @@ def deploy(branch=None):
         record_release()
 
 
+def copy_private_files():
+    """
+    Files that we shouldn't include in the public repo because they contain 
+    sensitive information (third-party service API keys, db connect info, etc)
+    """
+    settings_file = '/config/' + env.settings_file
+    put(local_dir + settings_file,path + settings_file,mirror_local_mode=True)
+
+
 def do_release():
     sudo('npm install')
+    copy_private_files()
     check_upstart(env.upstart_script)
     sudo('service crisisnet status && restart crisisnet || start crisisnet')
     #nginx_sites_enabled(env.nginx_conf)

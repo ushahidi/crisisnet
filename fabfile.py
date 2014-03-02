@@ -67,7 +67,7 @@ def prepare_log_file():
     Creates logfile and changes permissions so that user `cn` can write to it.
     """
     sudo('test -f /var/log/crisisnet.log || touch /var/log/crisisnet.log')
-    sudo('chown cn:cn /var/log/crisisnet.log')
+    #sudo('chown cn:cn /var/log/crisisnet.log')
 
 
 def nginx_sites_enabled(nginx_conf):
@@ -93,15 +93,17 @@ def deploy(branch=None):
     run("test -d %s || git clone https://github.com/ushahidi/crisisnet.git %s" % (path, path))
     with cd(path):
         #run('git branch --set-upstream %s origin/%s' % (branch, branch))
+
         run('git fetch')
         run('git checkout %s && git pull' % branch)
+
         do_release()
         record_release()
 
 
 def do_release():
     sudo('npm install')
-    check_upstart(env.upstart_start)
+    check_upstart(env.upstart_script)
     sudo('service crisisnet status && restart crisisnet || start crisisnet')
     #nginx_sites_enabled(env.nginx_conf)
     #sudo('service nginx status || service nginx start')
@@ -113,6 +115,8 @@ def record_release():
     Records the git commit version so that we can rollback.
     """
     current_release = run("git rev-parse HEAD")
+    # Note that this uses warn_only kwarg which will still fail in older 
+    # versions of fabric.
     last_release = run("tail -n 1 %s" % release_file, warn_only=True)
     if last_release.failed:
         run("echo %s > %s" % (current_release, release_file))

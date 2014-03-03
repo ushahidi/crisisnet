@@ -103,7 +103,7 @@ var itemSchema = mongoose.Schema({
       /**
        * Note that coordinates should always been longitude, latitude
        */
-      coordinates: {
+      coords: {
         index: '2dsphere',
         type: [Number]
       },
@@ -191,13 +191,13 @@ itemSchema.pre("save",function(next, done) {
 });
 
 itemSchema.pre('save', function (next) {
-  var coords = this.geo.coordinates;
-  if (this.isNew && (Array.isArray(coords) && 0 === coords.length) || this.geo.coordinates === null) {
-    this.geo.coordinates = undefined;
+  var coords = this.geo.coords;
+  if (this.isNew && (Array.isArray(coords) && 0 === coords.length) || this.geo.coords === null) {
+    this.geo.coords = undefined;
   }
 
   if (this.isNew && Array.isArray(coords) && 2 === coords.length) {
-    this.geo.coordinates = {
+    this.geo.coords = {
       type: 'Point',
       coordinates: coords
     }

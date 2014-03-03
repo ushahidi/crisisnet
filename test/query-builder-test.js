@@ -276,8 +276,26 @@ describe('search', function(){
                       , expectedIDs = ['5', '1'];
 
                     assert(_.difference(remoteIDs, expectedIDs).length === 0);
-                    
                     done();
+                    // Make sure minDistance works
+                    /*
+                    search.queryBuilder({
+                        location: '-97.743644, 30.272922',
+                        minDistance: 0.00015687249357503199
+                      }, function(err, results) {
+                        console.log(results);
+                        assert.isNull(err);
+                        assert(results.length===2);
+
+                        var remoteIDs = _(results).pluck('remoteID')
+                          , expectedIDs = ['5', '1'];
+
+                        assert(_.difference(remoteIDs, expectedIDs).length === 0);
+                        
+                        done();
+                    });
+                    */
+
                 });
                 
             });

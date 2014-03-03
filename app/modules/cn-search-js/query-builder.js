@@ -81,21 +81,33 @@ var queryBuilder = function(obj, cb) {
   var find;
   if(obj.location) {
     var coords = obj.location.split(",").map(parseFloat);
+    var geoNear = {
+      near: coords,
+      query: params,
+      limit: 50,
+      spherical: true,
+      maxDistance: 20 / 6371,
+      distanceField: 'distance',
+      includeLocs: 'geo.coords'
+    };
+
+    // Prefer minDistance
+    // http://emptysqua.re/blog/paging-geo-mongodb/
+    // Not available until 2.5, current stable is 2.4.9
+    if(_(obj).has('minDistance')) {
+      geoNear.minDistance = obj.minDistance;
+    }
 
     var aggregatePipeline = [
-      { '$geoNear': {
-          near: coords,
-          query: params,
-          limit: 50,
-          spherical: true,
-          maxDistance: 20 / 6371,
-          distanceField: 'geo.coords',
-          includeLocs: 'geo.coords'
-        }
-      },
-      { '$skip': offset },
+      { '$geoNear': geoNear },
       { '$limit': limit }
     ];
+
+    // If you really must, we'll let you skip records for now
+    //if(obj.offset && !_(geoNear).has('minDistance')) {
+    if(obj.offset) {
+      aggregatePipeline.push({ '$skip': offset });
+    }
 
     find = store.Item.aggregate(aggregatePipeline);
   }

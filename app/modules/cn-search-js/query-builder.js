@@ -90,7 +90,7 @@ var queryBuilder = function(obj, cb) {
           spherical: true,
           maxDistance: 20 / 6371,
           distanceField: 'geo.coords',
-          //includeLocs: 'geo.coorindates'
+          includeLocs: 'geo.coords'
         }
       },
       { '$skip': offset },

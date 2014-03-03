@@ -184,7 +184,7 @@ describe('search', function(){
         lifespan: "temporary",
         // downtown austin
         geo: {
-          coordinates: [-97.744826, 30.263992]
+          coords: [-97.744826, 30.263992]
         }
       },
       {
@@ -195,7 +195,7 @@ describe('search', function(){
         lifespan: "permanent",
         // downtown austin
         geo: {
-          coordinates: [-97.740345, 30.274703]
+          coords: [-97.740345, 30.274703]
         }
       },
       {
@@ -206,7 +206,7 @@ describe('search', function(){
         lifespan: "temporary",
         // downtown austin
         geo: {
-          coordinates: [-97.744826, 30.263992]
+          coords: [-97.744826, 30.263992]
         }
       },
       {
@@ -217,7 +217,7 @@ describe('search', function(){
         lifespan: "permanent",
         // downtown austin
         geo: {
-          coordinates: [-97.740345, 30.274703]
+          coords: [-97.740345, 30.274703]
         }
       },
       {
@@ -228,7 +228,7 @@ describe('search', function(){
         lifespan: "permanent",
         // houston
         geo: {
-          coordinates: [-95.369390, 29.760193]
+          coords: [-95.369390, 29.760193]
         }
       }
     ];
@@ -247,7 +247,6 @@ describe('search', function(){
             location: '-97.743644, 30.272922',
             tags: 'storm'
           }, function(err, results) {
-            console.log(results[0].geo);
             assert.isNull(err);
             assert(results.length===2);
             

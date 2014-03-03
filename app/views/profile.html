@@ -1,17 +1,26 @@
-<h3>Sup I'm a profile for {{user.fullName}}</h3>
-
-<p>You have authorized the following accounts:</p>
-<ul>
-  {{#user.authProfiles}}
-  <li><a target="_blank" href="http://{{provider}}.com/{{username}}">{{provider}}</a> ({{remoteID}})</li>
-  {{/user.authProfiles}}
-</ul>
-
-<h3>Apps</h3>
-<p><a href="/profile/app">Make an app</p>
-
-<ul>
+<h2>Hey {{user.fullName}}, welcome!</h2>
+<hr>
+<div class="col-md-8">
+  <h4>Your Apps</h4>
   {{#user.apps}}
-  <li><a href="/profile/app/{{id}}">{{name}}</a></li>
+  <div class="panel panel-default">
+    <div class="panel-heading">{{name}}</div>
+    <div class="panel-body">
+      <p>{{description}}</p>
+      <p><strong>API Key:</strong> <code>{{id}}</code></p>
+      <p><a class="btn btn-default" href="/profile/app/{{id}}">Make Changes</a></p>
+    </div>
+  </div>
   {{/user.apps}}
-</ul>
+
+  <a href="/profile/app" class="btn btn-primary btn-lg active" role="button">New App</a>
+</div>
+<div class="col-md-4 well well-sm">
+  <h5>You have authorized the following accounts</h5>
+  <ul class="list-unstyled">
+    {{#user.authProfiles}}
+    <li><a target="_blank" href="http://{{provider}}.com/{{username}}">{{provider}}</a></li>
+    {{/user.authProfiles}}
+  </ul>
+</div>
+

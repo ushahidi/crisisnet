@@ -121,6 +121,10 @@ var start = function(db) {
    * Application bootstrapping
    */
 
+  app.get("/", function(req,res) {
+    res.render("home", {user:req.user});
+  });
+
   // Setup routes
   resources.item.setupRoutes(app, "item");
   accounts.auth.setupRoutes(app, "auth");

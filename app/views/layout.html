@@ -10,7 +10,11 @@
         <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
 
         <link rel="stylesheet" href="/css/normalize.css">
-        <link rel="stylesheet" href="/css/foundation.min.css">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
         <link rel="stylesheet" href="/css/app.css">
         <script src="/js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
@@ -20,34 +24,59 @@
         <![endif]-->
 
         <!-- Nav -->
-        <nav class="top-bar" data-topbar>
-          <ul class="title-area">
-            <li class="name">
-              <h1><a href="#">CrisisNET App</a></h1>
-            </li>
-          </ul>
+        <nav class="navbar navbar-default navbar-static-top navbar-inverse" role="navigation">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/">CrisisNET API</a>
+            </div>
 
-          <section class="top-bar-section">
-            <!-- Right Nav Section -->
-            <ul class="right">
-              <li><a href="/auth/logout">Logout</a></li>
-            </ul>
-          </section>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                {{#user}}
+                <li><a href="/profile">Your Profile</a></li>
+                {{/user}}
+              </ul>
+
+              <ul class="nav navbar-nav navbar-right">
+                {{#user}}
+                <li><a href="/auth/logout">Logout</a></li>
+                {{/user}}
+                {{^user}}
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sign In <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    
+
+                    <li><a href="/auth/twitter">With Twitter</a></li>
+                    <li><a href="/auth/github">With GitHub</a></li>
+                 {{/user}}
+                  </ul>
+                </li>
+              </ul>
+
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+
         </nav>
 
         
         <!-- Container -->
-        <div class="row" id="container">
+        <div class="container" id="container">
           {{{ yield }}}
         </div>
 
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.0.min.js"><\/script>')</script>
-        <script src="/js/vendor/placeholder.js"></script>
-        <script src="/js/vendor/fastclick.js"></script>
-        <script src="/js/vendor/jquery.cookie.js"></script>
-        <script src="/js/vendor/foundation.min.js"></script>
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="/js/nod.min.js"></script>
         <script src="/js/plugins.js"></script>
         <script src="/js/main.js"></script>
 

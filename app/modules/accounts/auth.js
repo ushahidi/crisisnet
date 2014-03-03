@@ -2,7 +2,7 @@ var strategies = require("./social-auth-strategies")
   , passport = require('passport');
 
 var signup = function(req, res) {
-  res.render("register");
+  res.render("register", {user:req.user});
 };
 
 var setupRoutes = function(app, path) {
@@ -14,7 +14,7 @@ var setupRoutes = function(app, path) {
 
   app.get(path + '/logout', function(req, res){
     req.logout();
-    res.redirect(path + "/signup");
+    res.redirect("/");
   });
 
   /**

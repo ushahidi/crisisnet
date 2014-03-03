@@ -9,7 +9,6 @@ sys.path.append(local_dir)
 from fabric.api import *
 
 path = '/home/crisisnet/crisisnet'
-venv = '/home/crisisnet/crisisnet/venv'
 release_file = '/home/crisisnet/releases.crisisnet'
 
 @task

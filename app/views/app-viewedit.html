@@ -1,41 +1,32 @@
-View and edit your app.
-
 {{#message}}
-  {{message}}
+  <div class="alert alert-warning">{{message}}</div>
 {{/message}}
 
 {{#app}}
-  <p>Your app token is {{app.id}}. Use this when making API requests.</p>
-  <form action="/profile/app/{{app.id}}" method="POST" data-abide>
-    <div class="row">
-      <div class="large-12 columns">
-        <label>Name
-          <input required type="text" pattern="[a-zA-Z0-9]+" name="name" 
+  <h3>Edit {{app.name}}</h3>
+  <div class="alert alert-success">Your app token is <strong>{{app.id}}</strong>. Use this when making API requests.</div>
+  <form role="form" action="/profile/app/{{app.id}}" method="POST" data-abide>
+
+    <div class="form-group">
+        <label for="name">Name Your App</label>
+        <input class="form-control" required type="text" pattern="[a-zA-Z0-9\s]+" name="name" 
           value="{{app.name}}"
           placeholder="My Awesome App" />
-        </label>
-      </div>
     </div>
 
-    <div class="row">
-      <div class="large-12 columns">
-        <label>Description
-          <textarea required name="description" placeholder="It makes difficult things easier">{{app.description}}</textarea>
-        </label>
-      </div>
+    <div class="form-group">
+        <label>Describe Your App</label>
+        <textarea class="form-control" required name="description" placeholder="It makes difficult things easier">{{app.description}}</textarea>
     </div>
 
-    <div class="row">
-      <div class="large-12 columns">
-        <label>URL
-          <input name="url" type="url" 
+    <div class="form-group">
+        <label>URL</label>
+        <input class="form-control" name="url" type="url" 
           {{#app.url}}value="{{app.url}}"{{/app.url}}
           placeholder="http://mi-awsmr-appio.ly" />
-        </label>
-      </div>
     </div>
 
-    <button type="submit" class="medium button green">Submit</button>
+    <button type="submit" class="btn btn-default">Submit</button>
 
   </form>
 {{/app}}

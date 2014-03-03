@@ -5,3 +5,4 @@ config/staging.json
 node_modules
 docs
 deploy_config.py
+*.pyc

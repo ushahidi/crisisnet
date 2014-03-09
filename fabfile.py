@@ -19,7 +19,7 @@ def staging():
     env.key_filename = ''
     env.branch = 'development'
     env.upstart_script = 'crisisnet.conf'
-    env.nginx_conf = ''
+    env.nginx_conf = 'nginxconf'
     env.settings_file = 'staging.json'
 
 
@@ -50,7 +50,7 @@ def install_deps():
     """
     Installs os and base packages.
     """
-    deps = ['python-software-properties python g++ make nodejs git']
+    deps = ['python-software-properties python g++ make nodejs git nginx']
     for dep in deps:
         sudo('apt-get install -y --no-upgrade %s' % dep)
 
@@ -117,9 +117,9 @@ def do_release():
     copy_private_files()
     check_upstart(env.upstart_script)
     sudo('service crisisnet status && restart crisisnet || start crisisnet')
-    #nginx_sites_enabled(env.nginx_conf)
-    #sudo('service nginx status || service nginx start')
-    #sudo('service nginx reload')
+    nginx_sites_enabled(env.nginx_conf)
+    sudo('service nginx status || service nginx start')
+    sudo('service nginx reload')
 
 
 def record_release():

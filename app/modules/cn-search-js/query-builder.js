@@ -93,7 +93,7 @@ var queryBuilder = function(obj, cb) {
 
     // Prefer minDistance
     // http://emptysqua.re/blog/paging-geo-mongodb/
-    // Not available until 2.5, current stable is 2.4.9
+    // Not available until 2.6, current stable is 2.4.9
     if(_(obj).has('minDistance')) {
       geoNear.minDistance = obj.minDistance;
     }

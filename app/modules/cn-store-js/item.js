@@ -128,11 +128,19 @@ var itemSchema = mongoose.Schema({
      * This is a flat tagging system to categorize item data. CrisisNET maintains
      * the list of allowed tags. 
      */
-    tags: {
-      type: Array,
-      validate: validate('containsTags'), 
-      index: true
-    },
+    tags: [
+      {
+        name: { 
+          type: String, 
+          index: true
+        },
+        confidence: {
+          type: Number,
+          required: true,
+          default: 1.0
+        }
+      }
+    ],
     /**
      * [ISO code](http://stackoverflow.com/a/20623472/2367526) of the primary 
      * language of the content. 
@@ -204,7 +212,23 @@ itemSchema.pre('save', function (next) {
   }
 
   next();
-})
+});
+
+itemSchema.pre('save', function (next) {
+  if(_(this.tags).isEmpty()) return next();
+
+  var badTags = [];
+
+  _.each(_(this.tags).pluck('name'), function(tagName) {
+    if(!_(allowedTags).contains(tagName)) {
+      badTags.push(tagName);
+    }
+  });
+
+  if(_(badTags).isEmpty()) return next();
+
+  next(new Error('Invalid tag(s): ' + badTags.toString()));  
+});
 
 var Item = mongoose.model('Item', itemSchema);
 

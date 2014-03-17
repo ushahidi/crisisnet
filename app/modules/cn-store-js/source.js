@@ -39,7 +39,10 @@ var sourceSchema = mongoose.Schema({
       type: String,
       validate: validate('isIn', ['minute', 'hour', 'day', 'week'])
     },
-    hasRun: Boolean,
+    hasRun: {
+      type: Boolean,
+      default: false
+    },
     startDate: {
       type: Date,
       required: true

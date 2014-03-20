@@ -80,7 +80,7 @@ var start = function(db) {
   app.use(express.session({
     secret: config.sessionSecret,
     store: new RedisStore({
-      secret: config.sessionSecret
+      url: config.queueURI
     })
   }));
   app.use(passport.initialize());

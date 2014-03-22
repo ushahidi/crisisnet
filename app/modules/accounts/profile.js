@@ -21,8 +21,11 @@ var validateAppForm = function() {
 };
 
 var createApp = function(req, res, next) {
+  req.user.apps = req.user.apps || [];
   req.user.apps.push(req.body);
+
   req.user.saveP().then(function(user) {
+    
     var newApp = user.apps.pop();
     return res.redirect("/profile/app/" + newApp.id);
   });

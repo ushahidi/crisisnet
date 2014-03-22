@@ -31,7 +31,18 @@ var userSchema = mongoose.Schema({
   photos: [String],
   fullName: String,
   bio: String,
-  locationName: String
+  locationName: String,
+  apps: [
+    {
+      name: String,
+      description: String,
+      url: String,
+      isActive: {
+        type: String,
+        default: true
+      }
+    }
+  ]
 
 });
 
@@ -52,5 +63,3 @@ userSchema.pre("save",function(next, done) {
 var User = mongoose.model('User', userSchema);
 
 module.exports = User;
-
-module.exports

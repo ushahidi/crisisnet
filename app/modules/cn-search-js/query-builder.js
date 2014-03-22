@@ -48,7 +48,7 @@ var queryBuilder = function(obj, cb) {
   _.extend(params, addDateClause("publishedAt", obj.before, obj.after));
 
   // tags
-  _.extend(params, addInClause("tags", obj.tags));
+  _.extend(params, addInClause("tags.name", obj.tags));
 
   // text 
   _.extend(params, addSearchClause("content", obj.text));

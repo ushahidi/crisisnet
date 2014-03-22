@@ -1,6 +1,6 @@
 var store = require("../cn-store-js")
   , passport = require("passport")
-  , queryBuilder = require("../cn-search-js");
+  , queryBuilder = require("../cn-search-js").queryBuilder;
 
 var getSingle = function(req, res) {
   

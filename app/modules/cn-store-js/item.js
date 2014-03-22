@@ -6,7 +6,8 @@ var mongoose = require('mongoose')
   , _s = require('underscore.string')
   , allowedTags = require('./allowed-tags')
   , languageCodes = require('./language-codes')
-  , schemaUtils = require("./utils");
+  , schemaUtils = require("./utils")
+  , logger = require("winston");
 
 
 /**
@@ -103,10 +104,7 @@ var itemSchema = mongoose.Schema({
       /**
        * Note that coordinates should always been longitude, latitude
        */
-      coords: {
-        index: '2dsphere',
-        type: [Number]
-      },
+      coords: { type: [Number], index: '2dsphere'},
       /**
        * How accurate are the coordinates? Defined as radius, in meters.
        */
@@ -162,6 +160,10 @@ var itemSchema = mongoose.Schema({
       required: true,
       default: 'unknown',
       validate: validate('isIn', ['odbl', 'commercial', 'unknown'])
+    },
+    fromURL: {
+      type: String,
+      validate: validate('isUrl')
     }
 });
 
@@ -200,20 +202,19 @@ itemSchema.pre("save",function(next, done) {
 
 itemSchema.pre('save', function (next) {
   var coords = this.geo.coords;
-  if (this.isNew && (Array.isArray(coords) && 0 === coords.length) || this.geo.coords === null) {
+  
+  if(_(coords).isNull()) {
     this.geo.coords = undefined;
   }
 
-  if (this.isNew && Array.isArray(coords) && 2 === coords.length) {
-    this.geo.coords = {
-      type: 'Point',
-      coordinates: coords
-    }
+  if(this.isNew && Array.isArray(coords) && 0 === coords.length) {
+    this.geo.coords = undefined;
   }
 
   next();
 });
 
+/*
 itemSchema.pre('save', function (next) {
   if(_(this.tags).isEmpty()) return next();
 
@@ -229,6 +230,7 @@ itemSchema.pre('save', function (next) {
 
   next(new Error('Invalid tag(s): ' + badTags.toString()));  
 });
+*/
 
 var Item = mongoose.model('Item', itemSchema);
 

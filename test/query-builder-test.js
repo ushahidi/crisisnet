@@ -19,17 +19,17 @@ describe('search', function(){
   it('should filter by tag', function(done) {
     var items = [
       {
-        tags: ['weather', 'hurricane'],
+        tags: [{name:'weather'}, {name:'hurricane'}],
         remoteID: 1,
         source: "twitter"
       },
       {
-        tags: ['weather', 'storm'],
+        tags: [{name:'weather'}, {name:'storm'}],
         remoteID: 2,
         source: "twitter"
       },
       {
-        tags: ['storm'],
+        tags: [{name:'storm'}],
         remoteID: 3,
         source: "twitter"
       }
@@ -50,25 +50,21 @@ describe('search', function(){
   it('should filter by date', function(done) {
     var items = [
       {
-        tags: ['weather', 'hurricane'],
         remoteID: 1,
         source: "twitter",
         publishedAt: new Date()
       },
       {
-        tags: ['weather', 'storm'],
         remoteID: 2,
         source: "twitter",
         publishedAt: new Date()
       },
       {
-        tags: ['storm'],
         remoteID: 3,
         source: "twitter",
         publishedAt: moment().subtract('days', 1)
       },
       {
-        tags: ['storm'],
         remoteID: 3,
         source: "twitter",
         publishedAt: moment().add('days', 1)
@@ -104,19 +100,16 @@ describe('search', function(){
   it('should filter by license', function(done) {
     var items = [
       {
-        tags: ['weather', 'hurricane'],
         remoteID: 1,
         source: "twitter",
         license: "unknown"
       },
       {
-        tags: ['weather', 'storm'],
         remoteID: 2,
         source: "twitter",
         license: "odbl"
       },
       {
-        tags: ['storm'],
         remoteID: 3,
         source: "twitter",
         license: "commercial"
@@ -139,21 +132,18 @@ describe('search', function(){
   it('should filter by lifespan', function(done) {
     var items = [
       {
-        tags: ['weather', 'hurricane'],
         remoteID: 1,
         source: "twitter",
         license: "unknown",
         lifespan: "temporary"
       },
       {
-        tags: ['weather', 'storm'],
         remoteID: 2,
         source: "twitter",
         license: "odbl",
         lifespan: "permanent"
       },
       {
-        tags: ['storm'],
         remoteID: 3,
         source: "twitter",
         license: "commercial",
@@ -177,7 +167,7 @@ describe('search', function(){
   it('should filter by coords', function(done) {
     var items = [
       {
-        tags: ['weather', 'hurricane'],
+        tags: [{name: "not-storm"}],
         remoteID: 1,
         source: "twitter",
         license: "unknown",
@@ -188,7 +178,7 @@ describe('search', function(){
         }
       },
       {
-        tags: ['weather', 'storm'],
+        tags: [{name: "storm"}],
         remoteID: 2,
         source: "twitter",
         license: "odbl",
@@ -199,7 +189,7 @@ describe('search', function(){
         }
       },
       {
-        tags: ['weather', 'hurricane'],
+        tags: [{name: "not-storm"}],
         remoteID: 5,
         source: "twitter",
         license: "unknown",
@@ -210,7 +200,7 @@ describe('search', function(){
         }
       },
       {
-        tags: ['weather', 'storm'],
+        tags: [{name: "storm"}],
         remoteID: 6,
         source: "twitter",
         license: "odbl",
@@ -221,7 +211,6 @@ describe('search', function(){
         }
       },
       {
-        tags: ['storm'],
         remoteID: 3,
         source: "twitter",
         license: "commercial",
@@ -235,11 +224,13 @@ describe('search', function(){
 
     store.Item.saveList(items).then(function(items) {
       assert(items.length === 5);
+      console.log("length is 5");
       
       // filter for locations in austin
       search.queryBuilder({location: '-97.743644, 30.272922'}, function(err, results) {
         assert.isNull(err);
         assert(results.length===4);
+        console.log("length is 4");
         
         // apply tags just to make sure we can filter by query params 
         // as well as location
@@ -249,6 +240,7 @@ describe('search', function(){
           }, function(err, results) {
             assert.isNull(err);
             assert(results.length===2);
+            console.log("length is 2");
             
             // Make sure limit works
             search.queryBuilder({

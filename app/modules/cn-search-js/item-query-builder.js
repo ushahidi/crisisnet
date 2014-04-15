@@ -88,7 +88,9 @@ var itemQueryBuilder = function(obj, cb) {
   }
 
   find.exec(function(err, results) {
-    cb(err, results, {});
+    store.Item.count(params, function(err, count) {
+      cb(err, results, {total: count});
+    });
   });
     
 };

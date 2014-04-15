@@ -38,8 +38,9 @@ describe('search', function(){
     store.Item.saveList(items).then(function(items) {
       assert(items.length === 3);
       // filter for weather
-      search.itemQueryBuilder({tags: 'weather'}, function(err, results) {
+      search.itemQueryBuilder({tags: 'weather'}, function(err, results, meta) {
         assert(results.length===2);
+        assert(meta.total === 2);
         done();
       });
     }, function(err) {

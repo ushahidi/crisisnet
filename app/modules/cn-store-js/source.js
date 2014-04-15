@@ -1,5 +1,6 @@
 var mongoose = require('mongoose')
-  , validate = require('mongoose-validator').validate;
+  , validate = require('mongoose-validator').validate
+  , schemaUtils = require("./utils");
 
 /**
  * A Source document represents a source of data.
@@ -10,6 +11,10 @@ var sourceSchema = mongoose.Schema({
       default: Date.now
     },
     updatedAt: Date,
+    internalID: {
+      type: String,
+      index: true
+    },
     /**
      * `sourceType` lets the application know how the incoming data will be 
      * retrieved and structured. Often times there will only be one source 
@@ -61,11 +66,10 @@ var sourceSchema = mongoose.Schema({
     },
     lastRun: Date,
     /**
-     * Some services allow us to search "since" an id, so we store the id of 
-     * most-recently retrieved record along with the date/time this sucka was 
-     * last run. 
+     * Some services allow us to search "since" an id, or since a particular 
+     * date, etc etc so it's useful to know what we sucked last.
      */
-    lastRetrievedRemoteID: String,
+    lastRetrieved: mongoose.Schema.Types.Mixed,
     filters: mongoose.Schema.Types.Mixed,
     /**
      * External data is a gnarly, dangerous beast. It will inevitably break
@@ -75,6 +79,11 @@ var sourceSchema = mongoose.Schema({
     failData: mongoose.Schema.Types.Mixed
     //createdBy: User
 });
+
+// Copying common methods, because inheriting from a base schema that inherited 
+// from `mongoose.Schema` was annoying.
+schemaUtils.setCommonFuncs("statics", sourceSchema);
+schemaUtils.setCommonFuncs("methods", sourceSchema);
 
 sourceSchema.methods.repeatMilliseconds = function() {
   var msDict = {
@@ -92,14 +101,13 @@ sourceSchema.methods.repeatMilliseconds = function() {
   }
 };
 
-sourceSchema.statics.findActive = function() {
+sourceSchema.statics.findActive = function(callback) {
   var now = Date.now();
-  var query = this.find({
+  this.find({
     status: 'active', 
     startDate: {'$lte': now}, 
     endDate: {'$gte': now}
-  });
-  return query.exec();
+  }, callback);
 };
 
 // specify the transform schema option

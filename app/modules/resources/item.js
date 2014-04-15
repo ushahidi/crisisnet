@@ -1,30 +1,18 @@
 var store = require("../cn-store-js")
-  , passport = require("passport")
-  , queryBuilder = require("../cn-search-js").queryBuilder;
+  , queryBuilder = require("../cn-search-js").itemQueryBuilder
+  , utils = require('./utils');
 
-var getSingle = function(req, res) {
-  
+var recordRequest = function(req, res, next) {
+  var appID = req.headers.authorization.split(' ')[1];
+  var userID = req.user.id;
+
+  var requestModel = new store.Request({appID:appID, userID:userID});
+  requestModel.save();
+
+  next();
 };
 
-var getAll = function(req, res) {
-  var query = queryBuilder(req.query, function(err, results) {
-    if(err) {
-      return res.json(500, err);
-    }
-    res.json(200, results);
-  });
-};
-
-
-var setupRoutes = function(app, path) {
-  path = "/" + path;
-
-  // Get all
-  app.get(path, passport.authenticate('bearer', { session: false }), getAll);
-
-  // Get one
-  app.get(path+'/:id', passport.authenticate('bearer', { session: false }), getSingle);
-};
+var setupRoutes = utils.setupRoutes([queryBuilder, recordRequest]);
 
 
 module.exports = {

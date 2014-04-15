@@ -2,7 +2,8 @@ var Item = require('./item')
   , Map = require('./map')
   , Region = require('./region')
   , Source = require('./source')
-  , User = require('./user');
+  , User = require('./user')
+  , Request = require('./request');
 
 
 module.exports = {
@@ -10,5 +11,6 @@ module.exports = {
   Map: Map,
   Region: Region,
   Source: Source,
-  User: User
+  User: User,
+  Request: Request
 }

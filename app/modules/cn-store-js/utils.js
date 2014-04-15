@@ -1,6 +1,7 @@
 var Promise = require('promise')
   , _ = require('underscore')
-  , _s = require('underscore.string');
+  , _s = require('underscore.string')
+  , logger = require('winston');
 
 
 /**
@@ -26,39 +27,60 @@ methods.saveP = function() {
   });
 };
 
+statics.getOrCreate = function(upsertConditions, data, callback) {
+  var that = this;
+  this.findOne(upsertConditions,
+    // callback
+    function(err, obj) {
+      if(err) {
+        logger.error("utils.upsert findOne failed " + err);
+        callback(err);
+      }
+      
+      // we did not find an item matching the query conditions, so make one
+      if(!obj) {
+        //logger.info("utils.upsert creating new record");
+        obj = new that(data);
+      }
+      // extend the item we found with new data
+      else {
+        obj = _(obj).extend(data);
+      }
 
-statics.upsert = function(data, conditions) {
+      data = null;
+
+      obj.save(function(err, item) {
+        if(callback && typeof callback === "function") {
+          callback(err, item);
+        }
+        item = null;
+      });
+    }
+  );
+};
+
+
+statics.upsert = function(data, conditions, callback) {
+  var upsertConditions = {};
+    
+  _.each(conditions, function(prop) {
+    upsertConditions[prop] = data[prop];
+  });
+
+  this.getOrCreate(upsertConditions, data, callback);
+};
+
+statics.upsertP = function(data, conditions) {
   var that = this;
   return new Promise(function(resolve, reject) {
-    /** 
-     * Iterate over each passed property. Because these can be dot-delimited 
-     * paths (like for the param `{"my.nested.property": obj.my.nested.property }`), 
-     * we may need to drill down to the correct level of the passed object, hence 
-     * the `reduce` step.
-     */
-    var upsertConditions = {};
-    _.each(conditions, function(prop) {
-      var objProp = _.reduce(prop.split("."), function(memo, prop) { return memo[prop] }, data);
-      upsertConditions[prop] = objProp;
-    }); 
-    that.findOne(upsertConditions,
-      // callback
-      function(err, obj) {
-        if(err) return reject(err);
-        
-        // we did not find an item matching the query conditions, so make one
-        if(!obj) {
-          obj = new that(data);
-        }
-        // extend the item we found with new data
-        else {
-          _(obj).extend(data);
-        }
-
-        // return a promise
-        resolve(obj.saveP());
+    that.upsert(data, conditions, function(err, obj) {
+      if(err) { 
+        reject(err);
       }
-    );
+      else {
+        resolve(obj);
+      }
+    });
   });
 };
 
@@ -78,9 +100,10 @@ statics.saveList = function(data, upsertProperties) {
   var that = this;
   // Create a list of promises. 
   var funcs = _(data).map(function(obj) {
-    return that.upsert(obj, upsertProperties);
+    return that.upsertP(obj, upsertProperties);
   });
 
+  //logger.info("saveList have funcs");
   return Promise.all(funcs);
 };
 

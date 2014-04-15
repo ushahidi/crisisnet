@@ -104,9 +104,6 @@ var start = function(db) {
   // Allow cross-site requests using CORS protocol
   app.use(cors(corsOptions)); 
   
-  // Request routing!
-  // app.use(app.router);
-  
   // Templates
   app.set('views', __dirname + '/views');
   app.set('view engine', 'html');  
@@ -127,6 +124,9 @@ var start = function(db) {
 
   // Setup routes
   resources.item.setupRoutes(app, "item");
+  resources.request.setupRoutes(app, "request");
+  resources.app.setupRoutes(app, "app");
+  resources.user.setupRoutes(app, "user");
   accounts.auth.setupRoutes(app, "auth");
   accounts.profile.setupRoutes(app, "profile");
 

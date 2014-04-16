@@ -3,7 +3,8 @@ var Item = require('./item')
   , Region = require('./region')
   , Source = require('./source')
   , User = require('./user')
-  , Request = require('./request');
+  , Request = require('./request')
+  , SystemTag = require('./system-tag');
 
 
 module.exports = {
@@ -12,5 +13,6 @@ module.exports = {
   Region: Region,
   Source: Source,
   User: User,
-  Request: Request
+  Request: Request,
+  SystemTag: SystemTag
 }

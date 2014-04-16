@@ -4,7 +4,6 @@ var mongoose = require('mongoose')
   , Promise = require('promise')
   , _ = require('underscore')
   , _s = require('underscore.string')
-  , allowedTags = require('./allowed-tags')
   , languageCodes = require('./language-codes')
   , schemaUtils = require("./utils")
   , logger = require("winston");
@@ -20,16 +19,6 @@ var mongoose = require('mongoose')
  */
 validator.extend('isLanguage', function () {
     return _(_(languageCodes).pluck("code")).contains(this.str);
-});
-
-/**
- * The `containsTags` validator ensures that the tags provided by the user are 
- * all in the list of tags allowed by the system. 
- */
-validator.extend('containsTags', function() {
-    var tags = this.str.split(",");
-    if(_.isEmpty(tags) || tags[0] === "") return true;
-    return _.difference(tags, allowedTags).length === 0;
 });
 
 /**
@@ -218,24 +207,6 @@ itemSchema.pre('save', function (next) {
 
   next();
 });
-
-/*
-itemSchema.pre('save', function (next) {
-  if(_(this.tags).isEmpty()) return next();
-
-  var badTags = [];
-
-  _.each(_(this.tags).pluck('name'), function(tagName) {
-    if(!_(allowedTags).contains(tagName)) {
-      badTags.push(tagName);
-    }
-  });
-
-  if(_(badTags).isEmpty()) return next();
-
-  next(new Error('Invalid tag(s): ' + badTags.toString()));  
-});
-*/
 
 var Item = mongoose.model('Item', itemSchema);
 

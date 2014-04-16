@@ -127,6 +127,7 @@ var start = function(db) {
   resources.request.setupRoutes(app, "request");
   resources.app.setupRoutes(app, "app");
   resources.user.setupRoutes(app, "user");
+  resources.systemTag.setupRoutes(app, "system-tag");
   accounts.auth.setupRoutes(app, "auth");
   accounts.profile.setupRoutes(app, "profile");
 

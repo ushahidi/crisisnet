@@ -9,6 +9,12 @@ var mongoose = require('mongoose')
 // @TODO set autoIndex: false in production
 // http://mongoosejs.com/docs/guide.html#indexes
 
+validator.extend('isRole', function () {
+    var assignedRoles = this.str.split(',');
+    var allowedRoles = ['admin','developer'];
+    return _.difference(assignedRoles, allowedRoles).length === 0;
+});
+
 var userSchema = mongoose.Schema({
   createdAt: {
     type: Date,
@@ -28,6 +34,11 @@ var userSchema = mongoose.Schema({
     username: String,
     remoteID: String
   }],
+  roles: {
+    type: [String],
+    validate: validate('isRole'),
+    default: ['developer']
+  },
   photos: [String],
   fullName: String,
   bio: String,

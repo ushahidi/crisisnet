@@ -18,9 +18,18 @@ utils.getAll = function(queryBuilder) {
   };
 };
 
-
 utils.getSingle = function() {};
 
+utils.limitRoleAccess = function(roles) {
+  return function(req, res, next) {
+    if(_.intersection(roles, req.user.roles).length > 0) {
+      next();
+    }
+    else {
+      res.json(500, "Access denied");
+    }
+  };
+};
 
 utils.setupRoutes = function(middlewares) {
   if(!_.isArray(middlewares)) {

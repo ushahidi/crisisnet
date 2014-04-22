@@ -49,12 +49,13 @@ var itemQueryBuilder = function(obj, cb) {
   var find;
   if(obj.location) {
     var coords = obj.location.split(",").map(parseFloat);
+    var maxDistance = obj.maxDistance || 20;
     var geoNear = {
       near: coords,
       query: params,
       limit: 50,
       spherical: true,
-      maxDistance: 20 / 6371,
+      maxDistance: maxDistance / 6371,
       distanceField: 'distance',
       includeLocs: 'geo.coords'
     };

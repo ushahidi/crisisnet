@@ -25,7 +25,6 @@ var itemQueryBuilder = function(dbConn) {
     delete obj._;
 
     if(_(obj).isEmpty()) {
-      console.log(" --------- empty! --------");
       body = {
         query: {
           "match_all" : { }
@@ -34,20 +33,38 @@ var itemQueryBuilder = function(dbConn) {
     }
 
     else {
-      console.log(" --------- not! --------");
-      console.log(obj);
+      body = {
+        query: {
+          filtered: {}
+        }
+      };
 
       var filters = [];
       
       // tags
       if(obj.tags) {
-        filters.push({terms: {"tags.name": obj.tags.split(",")}});
+        filters.push({in: {"tags.name": obj.tags.split(",")}});
+      }
+
+      // sources
+      if(obj.sources) {
+        filters.push({in: {source: obj.sources.split(",")}});
+      }
+
+      // license
+      if(obj.license) {
+        filters.push({term: {license: obj.license}});
+      }
+
+      // lifespan
+      if(obj.lifespan) {
+        filters.push({term: {lifespan: obj.lifespan}});
       }
 
       // date range
       if(obj.before || obj.after) {
         var dateFilter = {
-          range: {createdAt:{}}
+          range: {publishedAt:{}}
         };
 
         if(obj.before) {
@@ -55,49 +72,75 @@ var itemQueryBuilder = function(dbConn) {
             obj.before = obj.before + 'T00:00'
           }
 
-          dateFilter.range.createdAt.lte = obj.before;
+          dateFilter.range.publishedAt.lte = obj.before;
         }
 
         if(obj.after) {
           if(!obj.after.match('T')) {
             obj.after = obj.after + 'T00:00'
           }
-          dateFilter.range.createdAt.gte = obj.after;
+          dateFilter.range.publishedAt.gte = obj.after;
         }
 
         filters.push(dateFilter);
       }
-      
 
-      body = {
-        query: {
-          "filtered" : {
-              /*
-              "query" : {
-                  "match" : { "tags" : "conflict" }
-              }*/
-          }
+      // location
+      if(obj.location) {
+        geoFilter = {
+            geo_distance: {
+              distance: (obj.distance || 200).toString() + "km",
+              "geo.coords" : _(obj.location.split(",").reverse()).map(parseFloat)
+            }
         }
-      };
+        
+        filters.push(geoFilter);
+      }
 
       if(!_(filters).isEmpty()) {
         body.query.filtered.filter = {
           and: filters
         };
       }
+
+      // limit
+      var limit = obj.limit || 25;
+
+      if(limit > 500) {
+        limit = 500;
+      }
+      
+      // offset
+      var offset = obj.offset || 0;
+
+      
+      // free text
+      if(obj.text) {
+        body.query.filtered.query = {
+          multi_match: { 
+            query: obj.text,
+            fields: ["summary", "content"]
+          }
+        }
+      }
+    
     }
 
     dbConn.search({
       index: 'item',
       type: 'item-type',
-      from: 0,
-      size: 25,
+      from: offset,
+      size: limit,
       body: body
     }).then(function (resp) {
         var hits = resp.hits.hits;
         var responseData = _(hits).map(function(hit) {
           var data = hit._source;
           data.id = hit._id;
+          if(data.geo.coords) {
+            data.geo.coords = data.geo.coords.reverse()
+          }
+
           return data;
         });
 

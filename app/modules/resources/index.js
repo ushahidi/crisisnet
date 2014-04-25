@@ -1,15 +1,12 @@
-var item = require('./item')
-  , request = require('./request')
-  , app = require('./app')
-  , user = require('./user')
-  , systemTag = require('./system-tag')
-  , source = require('./source');
+var setup = require('./setup');
+
+var register = function(endpoint, app, dbConn) {
+  var mod = require('./'+endpoint)
+    , queryBuilder = mod.queryBuilder(dbConn);
+
+  setup.setupRoutes(endpoint, app, mod.middlewares, queryBuilder);
+};
 
 module.exports = {
-  item: item,
-  request: request,
-  app: app,
-  user: user,
-  systemTag: systemTag,
-  source: source
+  register: register
 }

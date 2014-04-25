@@ -123,12 +123,13 @@ var start = function(db) {
   });
 
   // Setup routes
-  resources.item.setupRoutes(app, "item");
-  resources.request.setupRoutes(app, "request");
-  resources.app.setupRoutes(app, "app");
-  resources.user.setupRoutes(app, "user");
-  resources.systemTag.setupRoutes(app, "system-tag");
-  resources.source.setupRoutes(app, "source");
+  resources.register("item", app, db);
+  resources.register("app", app, db);
+  resources.register("request", app, db);
+  resources.register("user", app, db);
+  resources.register("system-tag", app, db);
+  resources.register("source", app, db);
+
   accounts.auth.setupRoutes(app, "auth");
   accounts.profile.setupRoutes(app, "profile");
 

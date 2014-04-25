@@ -90,10 +90,10 @@ var itemQueryBuilder = function(dbConn) {
         geoFilter = {
             geo_distance: {
               distance: (obj.distance || 200).toString() + "km",
-              "geo.coords" : _(obj.location.split(",").reverse()).map(parseFloat)
+              "geo.coords" : _(obj.location.split(",")).map(parseFloat)
             }
         }
-        
+
         filters.push(geoFilter);
       }
 
@@ -137,9 +137,6 @@ var itemQueryBuilder = function(dbConn) {
         var responseData = _(hits).map(function(hit) {
           var data = hit._source;
           data.id = hit._id;
-          if(data.geo.coords) {
-            data.geo.coords = data.geo.coords.reverse()
-          }
 
           return data;
         });

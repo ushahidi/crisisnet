@@ -28,7 +28,8 @@
     "connect-redis": "~1.4.7",
     "express-form": "~0.10.1",
     "passport-http-bearer": "~1.0.1",
-    "passport-github": "~0.1.5"
+    "passport-github": "~0.1.5",
+    "elasticsearch": "~2.1.4"
   },
   "devDependencies": {
     "mocha": "1.13.0",

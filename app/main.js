@@ -3,6 +3,7 @@ var express = require('express')
   , cors = require('cors')
   , config = require('config')
   , mongoose = require('mongoose')
+  , elasticsearch = require('elasticsearch')
   , _ = require('underscore')
   , logger = require('winston')
   , resources = require('./modules/resources')
@@ -122,8 +123,10 @@ var start = function(db) {
     res.render("home", {user:req.user});
   });
 
+  var searchClient = new elasticsearch.Client({ host: config.searchStoreURI });
+
   // Setup routes
-  resources.register("item", app, db);
+  resources.register("item", app, searchClient);
   resources.register("app", app, db);
   resources.register("request", app, db);
   resources.register("user", app, db);

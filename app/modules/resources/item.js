@@ -20,93 +20,91 @@ var recordRequest = function(req, res, next) {
 
 var itemQueryBuilder = function(dbConn) {
   return function(obj, cb) {
-    var params = {};
+    var body;
 
-    // before, after
-    _.extend(params, clauses.addDateClause("publishedAt", obj.before, obj.after));
+    delete obj._;
 
-    // tags
-    _.extend(params, clauses.addInClause("tags.name", obj.tags));
-
-    // text 
-    _.extend(params, clauses.addSearchClause("content", obj.text));
-    
-    // sources
-    _.extend(params, clauses.addInClause("source", obj.sources));
-    
-    // licenses
-    _.extend(params, clauses.addInClause("license", obj.license));
-    
-    // lifespan
-    _.extend(params, clauses.addInClause("lifespan", obj.lifespan));
-
-    // orderBy
-    var sort = { publishedAt: -1 };
-
-    // limit
-    var limit = obj.limit || 25;
-    
-    // offset
-    var offset = obj.offset || 0;
-
-    /**
-     * Geospatial queries are performed using an aggregate pipeline, which 
-     * uses the MongoDB driver to apply a series of transformations (like limit
-     * and skip) to the result set. Note that this returns raw documents and not 
-     * `mongoose.Model` objects.
-     */
-
-    var find;
-    if(obj.location) {
-      var coords = obj.location.split(",").map(parseFloat);
-      var maxDistance = obj.maxDistance || 20;
-      var geoNear = {
-        near: coords,
-        query: params,
-        limit: 50,
-        spherical: true,
-        maxDistance: maxDistance / 6371,
-        distanceField: 'distance',
-        includeLocs: 'geo.coords'
-      };
-
-      // Prefer minDistance
-      // http://emptysqua.re/blog/paging-geo-mongodb/
-      // Not available until 2.6, current stable is 2.4.9
-      if(_(obj).has('minDistance')) {
-        geoNear.minDistance = obj.minDistance;
+    if(_(obj).isEmpty()) {
+      console.log(" --------- empty! --------");
+      body = {
+        query: {
+          "match_all" : { }
+        }
       }
-
-      var aggregatePipeline = [
-        { '$geoNear': geoNear },
-        { '$limit': limit }
-      ];
-
-      // If you really must, we'll let you skip records for now
-      //if(obj.offset && !_(geoNear).has('minDistance')) {
-      if(obj.offset) {
-        aggregatePipeline.push({ '$skip': offset });
-      }
-
-      find = store.Item.aggregate(aggregatePipeline);
     }
 
     else {
-      find = store.Item.find(params)
-        .limit(limit)
-        .skip(offset)
-        .sort(sort);
+      console.log(" --------- not! --------");
+      console.log(obj);
+
+      var filters = [];
+      
+      // tags
+      if(obj.tags) {
+        filters.push({terms: {"tags.name": obj.tags.split(",")}});
+      }
+
+      // date range
+      if(obj.before || obj.after) {
+        var dateFilter = {
+          range: {createdAt:{}}
+        };
+
+        if(obj.before) {
+          if(!obj.before.match('T')) {
+            obj.before = obj.before + 'T00:00'
+          }
+
+          dateFilter.range.createdAt.lte = obj.before;
+        }
+
+        if(obj.after) {
+          if(!obj.after.match('T')) {
+            obj.after = obj.after + 'T00:00'
+          }
+          dateFilter.range.createdAt.gte = obj.after;
+        }
+
+        filters.push(dateFilter);
+      }
+      
+
+      body = {
+        query: {
+          "filtered" : {
+              /*
+              "query" : {
+                  "match" : { "tags" : "conflict" }
+              }*/
+          }
+        }
+      };
+
+      if(!_(filters).isEmpty()) {
+        body.query.filtered.filter = {
+          and: filters
+        };
+      }
     }
 
-    find.exec(function(err, results) {
-      /*
-      store.Item.count(params, function(err, count) {
-        cb(err, results, {total: count});
-      });
-      */
-      cb(err, results, {total: results.length});
+    dbConn.search({
+      index: 'item',
+      type: 'item-type',
+      from: 0,
+      size: 25,
+      body: body
+    }).then(function (resp) {
+        var hits = resp.hits.hits;
+        var responseData = _(hits).map(function(hit) {
+          var data = hit._source;
+          data.id = hit._id;
+          return data;
+        });
+
+        cb(null, responseData, {total: resp.hits.total});
+    }, function (err) {
+        cb(err);
     });
-      
   };
 };
 

@@ -1,3 +1,4 @@
 {
-  "dbURI": "mongodb://localhost/crisisnet_test"
+  "dbURI": "mongodb://localhost/crisisnet_test",
+  "searchStoreURI": "localhost:9200"
 }

@@ -123,7 +123,7 @@ var start = function(db) {
     res.render("home", {user:req.user});
   });
 
-  var searchClient = new elasticsearch.Client({ host: config.searchStoreURI });
+  var searchClient = new elasticsearch.Client(config.searchStoreConnect);
 
   // Setup routes
   resources.register("item", app, searchClient);

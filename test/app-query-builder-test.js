@@ -7,7 +7,7 @@ var config = require('config')
   , mongoose = require('mongoose')
   , clearDB  = require('mocha-mongoose')(config.dbURI)
   , store = require('../app/modules/cn-store-js')
-  , search = require('../app/modules/cn-search-js')
+  , appQueryBuilder = require('../app/modules/resources/app').queryBuilder()
   , moment = require("moment");
 
 describe('search', function(){
@@ -34,7 +34,7 @@ describe('search', function(){
     store.User.saveList(users).then(function(users) {
       assert(users.length === 2);
       // filter for weather
-      search.appQueryBuilder({}, function(err, results, meta) {
+      appQueryBuilder({}, function(err, results, meta) {
         assert(results.length === 3);
         assert(meta.total === 3);
         done();

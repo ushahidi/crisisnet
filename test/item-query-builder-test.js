@@ -1,3 +1,5 @@
+return;
+
 var chai = require('chai');
 chai.should();
 var config = require('config')

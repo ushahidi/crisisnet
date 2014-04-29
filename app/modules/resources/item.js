@@ -126,6 +126,8 @@ var itemQueryBuilder = function(dbConn) {
     
     }
 
+    body.sort = [{ "publishedAt" : {"order" : "desc"}}];
+
     dbConn.search({
       index: 'item',
       type: 'item-type',

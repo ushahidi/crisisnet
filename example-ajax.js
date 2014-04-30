@@ -35,7 +35,7 @@ $.ajax({
   url: 'http://localhost:8083/item?sources=gdelt',
   dataType: "json",
   beforeSend: function(xhr) {
-    xhr.setRequestHeader('Authorization', 'Bearer 532d32c7ed3329652f114b70');
+    xhr.setRequestHeader('Authorization', 'Bearer 532d1bb6bbcdd1862d6e15b4');
   },
   success: function (data) {
     console.log(data);

@@ -22,7 +22,8 @@ var requestSchema = mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     index: true,
     required: true
-  }
+  },
+  requestedResource: String
 });
 
 // Copying common methods, because inheriting from a base schema that inherited 

@@ -6,7 +6,11 @@ var recordRequest = function(req, res, next) {
   var appID = req.headers.authorization.split(' ')[1];
   var userID = req.user.id;
 
-  var requestModel = new store.Request({appID:appID, userID:userID});
+  var requestModel = new store.Request({
+    appID:appID, 
+    userID:userID,
+    requestedResource:req.originalUrl
+  });
   requestModel.save();
 
   next();
@@ -129,7 +133,9 @@ var itemQueryBuilder = function(dbConn) {
     var sortObj = {};
     var sortField = obj.sortBy || "publishedAt";
     sortObj[sortField] = {
-      order: obj.sortDirection || "desc"
+      order: obj.sortDirection || "desc",
+      missing: "_last", 
+      ignore_unmapped: true
     }
     body.sort = [sortObj];
 

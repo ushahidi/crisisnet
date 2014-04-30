@@ -59,7 +59,7 @@ r = requests.get(url, headers=headers)
     </tr>
     <tr>
     <td><em>tags</em></td>
-    <td>Get records matching <em>all</em> of these tags.</td>
+    <td>Get records matching <em>all</em> of these tags (get the full list of available tags from the <code>/system-tag</code> endpoint, described below).</td>
     <td>comma-separated list of strings eg <code>tags=health,injury</code>
     </td>
     </tr>
@@ -76,14 +76,14 @@ r = requests.get(url, headers=headers)
     </td>
     </tr>
     <tr>
-    <td><em>radius</em></td>
-    <td>Get records within x meters of <code>location</code>. Defaults to 10.</td>
-    <td>number in meters, eg <code>radius=10</code>
+    <td><em>distance</em></td>
+    <td>Get records within x meters of <code>location</code>. Defaults to 200.</td>
+    <td>number in kilometers, eg <code>distance=10</code>
     </td>
     </tr>
     <tr>
     <td><em>limit</em></td>
-    <td>Limits the number of records returned. Defaults to 25.</td>
+    <td>Limits the number of records returned. Defaults to 25, make is 500.</td>
     <td>number, eg <code>limit=100</code>
     </td>
     </tr>
@@ -96,7 +96,7 @@ r = requests.get(url, headers=headers)
     <tr>
     <td><em>sources</em></td>
     <td>Limit results based on where they originated (outside of CrisisNET)</td>
-    <td>comma-separated list of strings eg <code>sources=twitter,facebook</code>
+    <td>comma-separated list of strings eg <code>sources=ushahidi,gdelt</code>
     </td>
     </tr>
     <tr>
@@ -106,12 +106,74 @@ r = requests.get(url, headers=headers)
     </td>
     </tr>
     <tr>
-    <td><em>orderBy</em></td>
+    <td><em>sortBy</em></td>
     <td>Property used to order result set. Deafults to <code>publishedAt</code>
     </td>
-    <td>any valid property name, eg <code>orderBy=title</code>
+    <td>any valid property name, eg <code>sortBy=title</code>
+    </td>
+    </tr>
+    <tr>
+    <td><em>sortDirection</em></td>
+    <td>First to last (ascending) or last to first (descending). Deafults to <code>desc</code>
+    </td>
+    <td>asc for ascending or desc for descending, eg <code>sortDirection=asc</code>
     </td>
     </tr>
     </tbody>
   </table>
 </div>
+
+<hr>
+
+<div class="row">
+  <h2>System Tags</h2>
+  <p>Every <code>Item</code> document is assigned tags to give API consumers more details about the type of crisis information it covers. A tag has <code>name</code> and <code>confidence</code> properties. </p>
+<pre><code data-language="python">
+item = {
+    content: 'Example content',
+    geo: {
+        formattedAddress: '123 Main St, Anytown, USA',
+        coords: [30.12345, -97.5678]
+    },
+    tags: [
+        {
+            name: 'tag-one',
+            confidence: 1
+        },
+        {
+            name: 'tag-two',
+            confidence: .5
+        }
+    ]
+    ...
+}
+</code></pre>
+
+  <p>The <code>confidence</code> property indicates the likelihood that the tag has been accurately assigned.</p>
+  <p>Many data sources have their own methods for categorizing content. CrisisNET respects tag names applied by other systems, and also attempts to assign at least one (often many) "system tag(s)", so that, as often as possible, API consumers can rely on consistent categorization of content throughout the CrisisNET platform. System tags can be found at the <code>/system-tag</code> API endpoint.</p>
+  <pre><code data-language="python">
+import requests
+
+url = 'http://devapi.crisis.net/system-tag'
+headers = {'Authorization': 'Bearer ' + YOUR_TOKEN_HERE}
+
+r = requests.get(url, headers=headers)
+</code></pre>
+</div>
+
+<hr>
+
+<div class="row">
+  <h2>Source Information</h2>
+  <p>All <code>Item</code> documents come from a data source (a public API, a scraped web page, a static CSV file, etc). To get more information about the <code>source</code> assigned to an </code>Item</code>, you can use the <code>/source</code> API endpoint.</p>
+  <pre><code data-language="python">
+import requests
+
+url = 'http://devapi.crisis.net/source'
+headers = {'Authorization': 'Bearer ' + YOUR_TOKEN_HERE}
+
+r = requests.get(url, headers=headers)
+</code></pre>
+</div>
+
+<br><br>

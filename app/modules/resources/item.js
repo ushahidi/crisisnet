@@ -126,7 +126,12 @@ var itemQueryBuilder = function(dbConn) {
     
     }
 
-    body.sort = [{ "publishedAt" : {"order" : "desc"}}];
+    var sortObj = {};
+    var sortField = obj.sortBy || "publishedAt";
+    sortObj[sortField] = {
+      order: obj.sortDirection || "desc"
+    }
+    body.sort = [sortObj];
 
     dbConn.search({
       index: 'item',

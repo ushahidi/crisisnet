@@ -34,5 +34,9 @@ var queryBuilder = function(dbConn) {
 
 module.exports = {
   middlewares: [auth.limitRoleAccess('admin')],
-  queryBuilder: queryBuilder
+  queryBuilder: queryBuilder,
+  options: {
+    create: true,
+    model: store.Source
+  }
 }

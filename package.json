@@ -29,7 +29,8 @@
     "express-form": "~0.10.1",
     "passport-http-bearer": "~1.0.1",
     "passport-github": "~0.1.5",
-    "elasticsearch": "~2.1.4"
+    "elasticsearch": "~2.1.4",
+    "request": "~2.34.0"
   },
   "devDependencies": {
     "mocha": "1.13.0",

@@ -1,0 +1,280 @@
+<style>
+  .property-container {
+    margin-left: 15px;
+  }
+
+  .property-value {
+    margin-left: 10px;
+  }
+
+  span.property-value {
+    color: #999;
+  }
+
+  span.property-name {
+    font-weight: bold;
+  }
+
+  span.property-name::after {
+    content: ':';
+  }
+
+  .can-drop {
+    background: #ddd;
+  }
+
+  .drop-target {
+    background: green;
+  }
+
+  [data-required] .property-name::before {
+    content: '*';
+  }
+
+  span[data-edited] {
+    color: #666;
+    font-style: italic;
+    font-weight: bold;
+  }
+
+  [contenteditable]:hover {
+    background: yellow;
+  }
+
+  #wrapper {
+    padding-right: 250px;
+    transition: all 0.4s ease 0s;
+  }
+
+  #sidebar-wrapper {
+    margin-right: -250px;
+    right: 250px;
+    width: 250px;
+    background: #efefef;
+    position: fixed;
+    height: 100%;
+    overflow-y: auto;
+    z-index: 1000;
+    transition: all 0.4s ease 0s;
+  }
+
+  #page-content-wrapper {
+    width: 100%;
+  }
+
+  .sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 250px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (max-width:767px) {
+
+      #wrapper {
+        padding-right: 0;
+      }
+
+      #sidebar-wrapper {
+        right: 0;
+      }
+
+      #wrapper.active {
+        position: relative;
+        right: 250px;
+      }
+
+      #wrapper.active #sidebar-wrapper {
+        right: 250px;
+        width: 250px;
+        transition: all 0.4s ease 0s;
+      }
+
+  }
+
+  .sidebar-row {
+    padding: 4px 16px;
+  }
+
+  #undo {
+    float: right;
+  }
+
+  .has-error, #errors {
+    color: red;
+  }
+
+</style>
+
+<div id="wrapper">
+  <div id="sidebar-wrapper">
+    <div class="sidebar-row">
+      <h3>Let's Get Some Data!</h3>
+      <p>This is your friendly form helper. We'll give you a heads up if something about the source you're trying to add doesn't seem right. <strong>Click the "Get My Data" button when you're ready to submit your data source</strong>.</p>
+      <p id="errors"></p>
+      <hr>
+      <button id="save">Get My Data!</button>
+    </div>
+  </div>
+
+  <div id="page-content-wrapper">
+    <div class="row">
+      <h2>Step 1: Data Source Info</h2>
+      <p>This information is important to give other CrisisNET users details about the type of data they can expect from this source.</p>
+
+      <div class="form-group">
+        <label for="sourceType">*Name</label>
+        <input type="text" class="form-control" id="sourceType" placeholder="Enter a name">
+      </div>
+      <div class="form-group">
+        <label for="description">*Description</label>
+        <textarea rows="3" class="form-control" id="description" placeholder="Enter a description"></textarea>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+      <h2>Step 2: Get Some Data</h2>
+      <p>Enter the URL, including any required query parameters of an API of JSON file. We currently only support APIs that can be accessed directly in a single request -- for example APIs that are public or allow you to pass your API access key as a URL parameter (as opposed to APIs like Facebook, etc that require more complex authentication).</p>
+
+      <div class="form-group">
+        <label for="sourceURL">*API URL</label>
+        <div class="input-group">
+          <input type="text" id="sourceURL" class="form-control">
+          <span class="input-group-btn">
+            <button id="get-api" class="btn btn-default" type="button">Get Data</button>
+          </span>
+        </div><!-- /input-group -->
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+      <h2>Step 3: Enter the Data</h2>
+      <p>A sample document from your API is on the left, and the standard CrisisNET format is on the right. You can either a) drag fields from the sample document and drop them on their corresponding CrisisNET property, or b) click on a CrisisNET field to assign a static value. <strong>Just keep in mind that any static values will be the same for every document from the source that is indexed into CrisisNET</strong>.</p>
+    </div>
+
+    <hr>
+    <div class="row">
+      <button id="undo">Undo</button>
+    </div>
+    
+    <div class="row">
+      <div class="col-sm-6">
+        <h3>Source Document</h3>
+        <div id="source-json"></div>
+      </div>
+      <div class="col-sm-6">
+        <h3>CrisisNET Item</h3>
+        <div id="item-document"></div>
+      </div>
+    </div>
+
+  </div><!-- #page-content-wrapper -->
+</div><!-- #wrapper -->
+
+<script src="/js/interact.min.js"></script>
+<script src="/js/pubsub.js"></script>
+<script src="/js/jsonMarkup.js"></script>
+<script src="/js/validator.min.js"></script>
+<script src="/js/dataMap.js"></script>
+<script src="/js/uuid.js"></script>
+
+<script>
+
+var itemJSON = {
+    publishedAt: "Date the source document was created",
+    remoteID: "The unique ID assigned by the source document's database",
+    activeUntil: "Date until which this document should be considered active",
+    lifespan: "Allowed values are: temporary, semi-permanent, and permanent",
+    content: "Long text (like tweet content or body of an article)",
+    summary: "Automatically generated from content if not provided",
+    image: "Fully-formed URL to publically available image",
+    geo: {
+      addressComponents: {
+        formattedAddress: "Full address, like what you'd write on an envelope",
+        streetNumber: "eg 123",
+        streetName: "eg Main St",
+        streetAddress: "eg 123 Main St",
+        neighborhood: "eg Hyde Park",
+        adminArea5: "City", // city
+        adminArea4: "County", // county
+        adminArea3: "State", // state
+        adminArea2: "Region", // region
+        adminArea1: "Country", // country
+        postalCode: "Eg 78701 or W11 2BQ"
+      },
+      coords: ["longitude", "latitude"],
+      granularity: "How accurate are the coords? Accepted values are exact, near-exact, admin5, admin4, admin3, admin2, admin1, estimated, unclear",
+      locationIdentifiers: {
+        authorLocationName: "Address string, like 123 Main St, Anytown, IL, USA",
+        authorTimeZone: "Any TZ from the TZ database: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones"
+      }
+    },
+    tags: [
+      {
+        name: "A category, like physical-violence"
+      }
+    ],
+    language: {
+      code: "Lowercase ISO ALPHA-2 language (http://www.nationsonline.org/oneworld/country_code_list.htm), like en for English"
+    },
+    license: "Accepted values are odbl, commercial, or unknown",
+    fromURL: "Full URL if this document can be found online"
+};
+
+
+var addItem = function() {
+  $('#item-document').empty();
+  dataMap.UI.setupItem('#item-document', itemJSON);
+};
+
+addItem();
+
+$('#get-api').on('click', function(e) {
+  addItem();
+  dataMap.UI.hideError();
+  $('#source-json').html('<img src="/img/loading.gif">');
+  var url = $('#sourceURL').val();
+
+  dataMap.data.source.sourceURL = url;
+
+  $.getJSON("/datasets/proxy-request?url="+encodeURIComponent(url)) 
+    .success(function(data) {
+      $('#source-json').empty();
+      var sourceDoc = dataMap.data.getSampleSourceDoc(data);
+      var $sourceElement = dataMap.UI.setupSource('#source-json', sourceDoc);
+      dataMap.UI.initUI('#source-json', '#item-document');
+    })
+    .error(function(err) {
+      console.log(err);
+    });
+});
+
+$('#save').on('click', function(e) {
+  dataMap.UI.hideError();
+  dataMap.data.source.internalID = uuid.v4();
+  dataMap.data.source.createdBy = '{{user.id}}';
+  $.ajax({
+    url: 'http://localhost:8083/source',
+    type: "post",
+    data: dataMap.data.source,
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader('Authorization', 'Bearer 532d1bb6bbcdd1862d6e15b4');
+    },
+    success: function (data) {
+      console.log(data);
+    }
+  });
+});
+
+$('#sourceType, #description').on('blur', function(e) {
+  dataMap.data.source[$(this).attr('id')] = $(this).val();
+});
+
+//console.log(exampleObjects);
+</script>

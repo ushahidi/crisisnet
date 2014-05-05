@@ -11,9 +11,9 @@
 
         <link rel="stylesheet" href="/css/normalize.css">
         <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
         <!-- Optional theme -->
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
 
         <link rel="stylesheet" href="/css/app.css">
         <script src="/js/vendor/modernizr-2.6.2.min.js"></script>
@@ -67,15 +67,16 @@
 
         
         <!-- Container -->
+        <!-- Loading some JS here so it's available to templates -->
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        <script src="/js/lodash.min.js"></script>
+
         <div class="container" id="container">
           {{{ yield }}}
         </div>
 
-
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.0.min.js"><\/script>')</script>
         <!-- Latest compiled and minified JavaScript -->
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
         <script src="/js/nod.min.js"></script>
         <script src="/js/plugins.js"></script>
         <script src="/js/main.js"></script>

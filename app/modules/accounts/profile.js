@@ -8,6 +8,10 @@ var viewProfile = function(req, res) {
   res.render("profile", {user:req.user});
 };
 
+var addData = function(req, res) {
+  res.render("add-data");
+};
+
 var appForm = function(req, res) {
   res.render("app-form", {user:req.user});
 };
@@ -65,6 +69,7 @@ var setupRoutes = function(app, path) {
   path = "/" + path
 
   app.get(path, authRequired, viewProfile);
+  app.get(path + '/add-data', authRequired, addData);
   app.get(path + '/app', authRequired, appForm);
   app.post(path + '/app', validateAppForm(), authRequired, createApp);
   app.get(path + '/app/:id', authRequired, viewEditApp);

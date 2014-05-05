@@ -20,7 +20,14 @@ setup.getAll = function(queryBuilder) {
 
 setup.getSingle = function() {};
 
-setup.setupRoutes = function(endpoint, app, middlewares, queryBuilder) {
+setup.create = function(model) {
+  return function(req, res) {
+    console.log(req.body);
+    res.json(201);
+  }
+};
+
+setup.setupRoutes = function(endpoint, app, middlewares, queryBuilder, options) {
     path = "/" + endpoint;
 
     var args = [passport.authenticate('bearer', { session: false })];
@@ -36,6 +43,14 @@ setup.setupRoutes = function(endpoint, app, middlewares, queryBuilder) {
     args.pop(); // get rid of getAll
     args.push(setup.getSingle);
     app.get.apply(app, args);
+
+    // Post
+    if(options && options.create) {
+      args[0] = path;
+      args.pop();
+      args.push(setup.create(options.model));
+      app.post.apply(app, args);
+    }
 };
 
 module.exports = setup;

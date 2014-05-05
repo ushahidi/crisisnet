@@ -8,6 +8,7 @@ var express = require('express')
   , logger = require('winston')
   , resources = require('./modules/resources')
   , accounts = require('./modules/accounts')
+  , datasets = require('./modules/datasets')
   , stylus = require('stylus')
   , passport = require("passport")
   , BearerStrategy = require('passport-http-bearer').Strategy
@@ -78,6 +79,7 @@ var start = function(db) {
 
   // Session support. This is required for OAuth
   app.use(express.cookieParser());
+  app.use(express.bodyParser());
   app.use(express.session({
     secret: config.sessionSecret,
     store: new RedisStore({
@@ -135,6 +137,8 @@ var start = function(db) {
 
   accounts.auth.setupRoutes(app, "auth");
   accounts.profile.setupRoutes(app, "profile");
+
+  datasets.source.setupRoutes(app, "datasets");
 
 
   // ...and we're off.

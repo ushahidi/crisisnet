@@ -121,9 +121,8 @@ var itemQueryBuilder = function(dbConn) {
       // free text
       if(obj.text) {
         body.query.filtered.query = {
-          multi_match: { 
-            query: obj.text,
-            fields: ["summary", "content"]
+          match: { 
+            searchText: obj.text
           }
         }
       }
@@ -140,7 +139,7 @@ var itemQueryBuilder = function(dbConn) {
     body.sort = [sortObj];
 
     dbConn.search({
-      index: 'item',
+      index: 'item_alias',
       type: 'item-type',
       from: offset,
       size: limit,
@@ -150,6 +149,8 @@ var itemQueryBuilder = function(dbConn) {
         var responseData = _(hits).map(function(hit) {
           var data = hit._source;
           data.id = hit._id;
+
+          delete data.searchText;
 
           return data;
         });

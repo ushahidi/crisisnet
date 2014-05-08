@@ -5,6 +5,7 @@ var mongoose = require('mongoose')
 /**
  * A Source document represents a source of data.
  */
+
 var sourceSchema = mongoose.Schema({
     createdAt: {
       type: Date,
@@ -29,6 +30,21 @@ var sourceSchema = mongoose.Schema({
       required: true,
       index: true
     },
+    sourceURL: {
+      type: String,
+      validate: validate('isUrl')
+    },
+    sourceDataType: {
+      type: String,
+      default: 'json'
+    },
+    listProperty: String,
+    isDynamic: {
+      type: Boolean,
+      default: false
+    },
+    mapping: mongoose.Schema.Types.Mixed,
+    statics: mongoose.Schema.Types.Mixed,
     /**
      * Most sources will repeat, because they poll an endpoint periodically for 
      * new or updated data. However it is also possible to have sources that 

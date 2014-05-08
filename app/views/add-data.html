@@ -1,3 +1,4 @@
+<link rel="stylesheet" src="/css/datepicker3.css">
 <style>
   .property-container {
     margin-left: 15px;
@@ -126,11 +127,19 @@
 
       <div class="form-group">
         <label for="sourceType">*Name</label>
-        <input type="text" class="form-control" id="sourceType" placeholder="Enter a name">
+        <input data-display-name="Name" type="text" class="form-control" id="sourceType" placeholder="Enter a name">
       </div>
       <div class="form-group">
         <label for="description">*Description</label>
-        <textarea rows="3" class="form-control" id="description" placeholder="Enter a description"></textarea>
+        <textarea data-display-name="Description" rows="3" class="form-control" id="description" placeholder="Enter a description"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="startDate">*Start Date</label>
+        <input data-display-name="Start Date" type="text" class="form-control" id="startDate" placeholder="When should we start retrieving this data?">
+      </div>
+      <div class="form-group">
+        <label for="endDate">*End Date</label>
+        <input data-display-name="End Date" type="text" class="form-control" id="endDate" placeholder="When is the last day we should retrieve this data?">
       </div>
     </div>
 
@@ -143,7 +152,7 @@
       <div class="form-group">
         <label for="sourceURL">*API URL</label>
         <div class="input-group">
-          <input type="text" id="sourceURL" class="form-control">
+          <input data-display-name="API URL" type="text" id="sourceURL" class="form-control">
           <span class="input-group-btn">
             <button id="get-api" class="btn btn-default" type="button">Get Data</button>
           </span>
@@ -183,6 +192,7 @@
 <script src="/js/validator.min.js"></script>
 <script src="/js/dataMap.js"></script>
 <script src="/js/uuid.js"></script>
+<script src="/js/bootstrap-datepicker.js"></script>
 
 <script>
 
@@ -237,7 +247,6 @@ addItem();
 
 $('#get-api').on('click', function(e) {
   addItem();
-  dataMap.UI.hideError();
   $('#source-json').html('<img src="/img/loading.gif">');
   var url = $('#sourceURL').val();
 
@@ -256,7 +265,9 @@ $('#get-api').on('click', function(e) {
 });
 
 $('#save').on('click', function(e) {
-  dataMap.UI.hideError();
+  var isValid = dataMap.data.validate();
+  if(!isValid) { return false; }
+
   dataMap.data.source.internalID = uuid.v4();
   dataMap.data.source.createdBy = '{{user.id}}';
   $.ajax({
@@ -272,8 +283,8 @@ $('#save').on('click', function(e) {
   });
 });
 
-$('#sourceType, #description').on('blur', function(e) {
-  dataMap.data.source[$(this).attr('id')] = $(this).val();
+$('#startDate, #endDate').datepicker({
+  format: 'yyyy-mm-dd'
 });
 
 //console.log(exampleObjects);

@@ -22,8 +22,17 @@ setup.getSingle = function() {};
 
 setup.create = function(model) {
   return function(req, res) {
-    console.log(req.body);
-    res.json(201);
+    var obj = new model(req.body);
+
+    obj.save(function(err, doc) {
+      if(err) {
+        console.log(err);
+        res.json(500, err.message);
+      }
+      else {
+        res.json(201, doc);
+      }
+    });
   }
 };
 

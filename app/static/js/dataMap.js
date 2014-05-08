@@ -11,6 +11,9 @@ dataMap.data = (function(dataMap) {
     sourceDataType: 'json',
     description: null,
     listProperty: null,
+    startDate: null,
+    endDate: null,
+    frequency: 'once',
     isDynamic: true,
     mapping: {},
     statics: {}
@@ -20,7 +23,7 @@ dataMap.data = (function(dataMap) {
     lastChanged: []
   };
 
-  var updateSource = function(msg, data) {
+  var updateSourceMapping = function(msg, data) {
     if(data.changeType === 'mapping') {
       e.source.mapping[data.to.path] = data.from.path;
     }
@@ -31,21 +34,124 @@ dataMap.data = (function(dataMap) {
     sourceState.lastChanged.unshift({changeType: data.changeType, path: data.to.path});
   };
 
-  var validateSource = function(msg, data) {
-    var invalidProps = [],
-        requiredItemProperties = ['remoteID', 'content'],
+  var updateSource = function(msg, data) {
+    e.source[data.to.path] = data.to.text;
+  };
+
+  e.validate = function() {
+    if(!validateSource() || !validateItem()) {
+      return false;
+    };
+
+    dataMap.bus.publish("validated");
+    return true;
+  };
+
+  var customValidators = {
+    required: function(val) {
+      return !_(val).isEmpty();
+    },
+    isDate: function(val) {
+      try {
+        try {
+          var maybeEpoch = parseInt(val)
+          if(!_(maybeEpoch).isNaN() && maybeEpoch > 3000) {
+            val = maybeEpoch;
+          }
+        }
+        catch(err) {}
+        return (new Date(val)).toString() !== "Invalid Date";
+      }
+      catch(err) {
+        return false;
+      }
+    },
+    isIn: function(arr) {
+      return function(val) {
+        return _(arr).contains(val);
+      };
+    }
+  };
+
+  var validateChange = function(rules, data, key) {
+    if(!_(rules[data.to.path]).isUndefined() && 
+        !_.every(_.map(rules[data.to.path].checks, 
+          function(rule) { 
+            return rule(data.to.text) } ))) 
+    {
+      // get rid of the 'mapping' or 'static' specific to e.source structure
+      data.to.errorMessage = rules[data.to.path].message;
+      dataMap.bus.publish(key+'.invalid', data);
+    }
+    else {
+      dataMap.bus.publish(key+'.validProp', data);
+    }
+  };
+
+  var validateSource = function() {
+    var isValid = true,
         requiredProperties = [
           'sourceType', 
           'sourceURL', 
           'description', 
-          'listProperty'
+          'listProperty',
+          'startDate',
+          'endDate'
         ];
 
     _(requiredProperties).each(function(prop) {
       if(_(e.source[prop]).isEmpty()) {
-        invalidProps.push(prop);
+        isValid = false;
+        dataMap.bus.publish('source.invalid', { to: { path: prop } });
+      }
+      else {
+        dataMap.bus.publish('source.validProp', { to: { path: prop } });
       }
     });
+
+    return isValid;
+  };
+
+  var validateSourceChange = function(msg, data) {
+    var cv = customValidators;
+    var rules = {
+      'sourceType': {
+        checks: [cv.required],
+        message: 'Please give your data source a name'
+      },
+      'description': {
+        checks: [cv.required],
+        message: 'Please give your data source a description'
+      },
+      'sourceURL': {
+        checks: [cv.required, validator.isURL],
+        message: 'Please enter a valid URL'
+      }
+    };
+
+    validateChange(rules, data, 'source');
+
+    if(data.to.path === "sourceType") {
+      $.ajax({
+        url: 'http://localhost:8083/source?sourceType='+data.to.text,
+        type: "get",
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('Authorization', 'Bearer 532d1bb6bbcdd1862d6e15b4');
+        },
+        success: function (returnData) {
+          if(returnData.total > 0) {
+            data.to.errorMessage = "A source with the name '"+data.to.text+"' already exists."
+            dataMap.bus.publish('source.invalid', data);
+          }
+        }
+      });
+    }
+
+  };
+
+  var validateItem = function() {
+    var requiredItemProperties = ['remoteID', 'content'],
+        isValid = true;
 
     _(requiredItemProperties).each(function(prop) {
       if(_(e.source.mapping[prop]).isEmpty() && _(e.source.statics[prop]).isEmpty()) {
@@ -53,66 +159,53 @@ dataMap.data = (function(dataMap) {
           to: { path: prop } 
         });
 
-        return false;
+        isValid = false;
       }
     });
 
-    if(invalidProps.length > 0) {
-      dataMap.bus.publish('source.invalid', { props: props });
-      return false;
-    }
-    else {
-      dataMap.bus.publish('source.valid');
-      return true;
-    }
-
+    return isValid;
   };
 
-  var validateItem = function(msg, data) {
-    var required = function(val) {
-      return !_(val).isEmpty();
-    };
-
-    var isDate = function(val) {
-      try {
-        return (new Date(val)).toString() !== "Invalid Date";
-      }
-      catch(err) {
-        return false;
-      }
-    };
-
-    var isIn = function(arr) {
-      return function(val) {
-        return _(arr).contains(val);
-      };
-    };
-
+  var validateItemChange = function(msg, data) {
+    var cv = customValidators;
     var rules = {
-      'remoteID': [required],
-      'content': [required],
-      'publishedAt': [isDate],
-      'activeUntil': [isDate],
-      'lifespan': [isIn(['temporary', 'semi-permanent', 'permanent'])],
-      'summary': [_.isString], 
-      'image': [validator.isURL],
-      'coords.latitude': [validator.isFloat],
-      'coords.longitude': [validator.isFloat],
-      'tags.name': [_.isString],
-      'fromURL': [validator.isURL]
+      'remoteID': {
+        checks: [cv.required],
+        message: 'A remoteID is required'
+      },
+      'content': {
+        checks: [cv.required]
+      },
+      'publishedAt': {
+        checks: [cv.isDate]
+      },
+      'activeUntil': {
+        checks: [cv.isDate]
+      },
+      'lifespan': {
+        checks: [cv.isIn(['temporary', 'semi-permanent', 'permanent'])]
+      },
+      'summary': {
+        checks: [_.isString]
+      }, 
+      'image': {
+        checks: [validator.isURL]
+      },
+      'coords.latitude': {
+        checks: [validator.isFloat]
+      },
+      'coords.longitude': {
+        checks: [validator.isFloat]
+      },
+      'tags.name': {
+        checks: [_.isString]
+      },
+      'fromURL': {
+        checks: [validator.isURL]
+      }
     };
 
-    if(!_(rules[data.to.path]).isUndefined() && 
-        !_.every(_.map(rules[data.to.path], 
-          function(rule) { 
-            return rule(data.to.text) } ))) 
-    {
-      // get rid of the 'mapping' or 'static' specific to e.source structure
-      dataMap.bus.publish('item.invalid', data);
-    }
-    else {
-      dataMap.bus.publish('item.valid', data);
-    }
+    validateChange(rules, data, 'item');
   };
 
   var undo = function() {
@@ -127,8 +220,10 @@ dataMap.data = (function(dataMap) {
     }
   };
 
-  dataMap.bus.subscribe('item.changed', updateSource);
-  dataMap.bus.subscribe('item.changed', validateItem);
+  dataMap.bus.subscribe('item.changed', updateSourceMapping);
+  dataMap.bus.subscribe('item.changed', validateItemChange);
+  dataMap.bus.subscribe('source.changed', updateSource);
+  dataMap.bus.subscribe('source.changed', validateSourceChange);
   dataMap.bus.subscribe('undo', undo);
 
   var findLists = function(obj, lists, curPath) {
@@ -139,7 +234,7 @@ dataMap.data = (function(dataMap) {
     _(obj).each(function(value, key) {
       var path = (function() {
         if(curPath) {
-          return curPath + "." + key;
+          return curPath + "|" + key;
         }
         else {
           return key;
@@ -176,7 +271,37 @@ dataMap.data = (function(dataMap) {
 
 dataMap.UI = (function(dataMap) {
   var exports = e = {};
-  e.state = { lastChanged: [], isValid: false };
+  e.state = { 
+    lastChanged: [], 
+    invalidItems: [],
+    invalidSources: [],
+    isValid: false
+  };
+
+  e.setErrorState = function(type, validity, path) {
+    var props = {
+      item: e.state.invalidItems,
+      source: e.state.invalidSources
+    };
+
+    var arr = props[type];
+
+    if(validity === 'valid') {
+      props[type] = _(arr).without(path); 
+    }
+    else if(!_(arr).contains(path)) {
+      props[type].push(path);
+    }
+
+    if(e.state.invalidItems.length === 0 && e.state.invalidSources.length) {
+      e.state.isValid = true;
+    }
+
+    else {
+      e.state.isValid = false;
+    }
+  };
+  
   var required = [
     'remoteID',
     'content'
@@ -322,45 +447,85 @@ dataMap.UI = (function(dataMap) {
         .removeClass('can-drop');
   };
 
-  e.showError = function(msg) {
-    $('#errors').text(msg);
+  e.addError = function(msg, path) {
+    if($('[data-error-path="'+path+'"]').length > 0) {
+      return;
+    }
+
+    var $el = $('<span>', { 'data-error-path': path, text: msg + " " });
+    $('#errors').append($el);
   };
 
-  e.hideError = function() {
-    $('#errors').empty();
+  e.removeError = function(errorPath) {
+    $('#errors').find('[data-error-path="'+errorPath+'"]').remove();
   };
   
   // Event bindings
   $('#undo').on('click', function() { dataMap.bus.publish('undo') });
+  $('#sourceType, #description, #sourceURL, #startDate, #endDate').on('blur', function(e) { 
+    var $this = $(this);
+    
+    dataMap.bus.publish('source.changed', {
+      to: {
+        $el: $this,
+        path: $this.attr('id'),
+        text: $this.val()
+      }
+    });
+  });
 
   dataMap.bus.subscribe('item.changed', function(msg, data) {
     e.state.lastChanged.unshift(data);
   });
 
   dataMap.bus.subscribe('undo', undo);
+  
   dataMap.bus.subscribe('item.invalid', function(msg, data) {
-    e.state.isValid = false;
+    e.setErrorState('item', 'invalid', data.to.path);
 
     if(!data.to.$el) {
-      data.to.$el = $('[data-path='+data.to.path+']').find('.property-value');
+      data.to.$el = $('[data-path="'+data.to.path+'"]').find('.property-value');
     }
 
     data.to.$el.parent('.property-container').addClass('has-error');
-    e.showError(data.to.path + " is not correct. Please check that value and try again.");
+    var errorMessage = data.to.errorMessage || data.to.path + " is not correct. Please check that value and try again.";
+    e.addError(errorMessage, data.to.path);
   });
 
-  dataMap.bus.subscribe('item.valid', function(msg, data) {
-    e.state.isValid = true;
-    e.hideError();
-    $('.has-error').removeClass('has-error');
+  dataMap.bus.subscribe('item.validProp', function(msg, data) {
+    e.setErrorState('item', 'valid', data.to.path);
+    e.removeError(data.to.path);
+
+    if(!data.to.$el) {
+      data.to.$el = $('[data-path="'+data.to.path+'"]').find('.property-value');
+    }
+
+    data.to.$el.closest('.property-container').removeClass('has-error');
   });
 
   dataMap.bus.subscribe('source.invalid', function(msg, data) {
-    e.state.isValid = false;
-    console.log("wrong!");
+    e.setErrorState('source', 'invalid', data.to.path);
+    if(!data.to.$el) {
+      data.to.$el = $('#'+data.to.path);
+    }
+    var $parent = data.to.$el.closest('.form-group');
+    $parent.addClass('has-error');
+
+    var errorMessage = data.to.errorMessage || data.to.$el.attr('data-display-name') + " needs a second look.";
+    e.addError(errorMessage, data.to.path);
   });
 
-  dataMap.bus.subscribe('source.valid', function(msg, data) {
+  dataMap.bus.subscribe('source.validProp', function(msg, data) {
+    e.setErrorState('source', 'valid', data.to.path);
+    if(!data.to.$el) {
+      data.to.$el = $('#'+data.to.path);
+    }
+    var $parent = data.to.$el.closest('.form-group');
+    $parent.removeClass('has-error');
+    e.removeError(data.to.path);
+  });
+
+  dataMap.bus.subscribe('validated', function(msg, data) {
     e.state.isValid = true;
   });
 

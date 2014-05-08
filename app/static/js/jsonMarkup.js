@@ -7,7 +7,7 @@
 
     var path = $parent.closest('.property-container').attr('data-path');
     if(path) {
-      path = path + "." + keyName;
+      path = path + "|" + keyName;
     }
     else {
       path = keyName;

@@ -45,6 +45,7 @@ var sourceSchema = mongoose.Schema({
     },
     mapping: mongoose.Schema.Types.Mixed,
     statics: mongoose.Schema.Types.Mixed,
+    language: String,
     /**
      * Most sources will repeat, because they poll an endpoint periodically for 
      * new or updated data. However it is also possible to have sources that 

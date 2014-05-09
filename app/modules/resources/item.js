@@ -101,6 +101,14 @@ var itemQueryBuilder = function(dbConn) {
         filters.push(geoFilter);
       }
 
+      // adminAreas
+      if(obj.adminArea1) {
+        console.log(obj.adminArea1);
+        filters.push({term: {'geo.addressComponents.adminArea1': obj.adminArea1}}); 
+      }
+
+
+
       if(!_(filters).isEmpty()) {
         body.query.filtered.filter = {
           and: filters

@@ -103,7 +103,6 @@ var itemQueryBuilder = function(dbConn) {
 
       // adminAreas
       if(obj.adminArea1) {
-        console.log(obj.adminArea1);
         filters.push({term: {'geo.addressComponents.adminArea1': obj.adminArea1}}); 
       }
 

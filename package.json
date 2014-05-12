@@ -7,6 +7,7 @@
     "dev-server": "DEBUG=express:* NODE_ENV=development nodemon app/main.js",
     "prod-server": "NODE_ENV=production node app/main.js",
     "staging-server": "NODE_ENV=staging node app/main.js",
+    "take-snapshot": "NODE_ENV=staging node bin/take-snapshots.js",
     "run-test": "NODE_ENV=test mocha"
   },
   "dependencies": {
@@ -30,7 +31,8 @@
     "passport-http-bearer": "~1.0.1",
     "passport-github": "~0.1.5",
     "elasticsearch": "~2.1.4",
-    "request": "~2.34.0"
+    "request": "~2.34.0",
+    "fast-csv": "~0.2.5"
   },
   "devDependencies": {
     "mocha": "1.13.0",

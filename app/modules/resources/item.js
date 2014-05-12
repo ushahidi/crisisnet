@@ -101,11 +101,9 @@ var itemQueryBuilder = function(dbConn) {
         filters.push(geoFilter);
       }
 
-      // adminAreas
-      if(obj.adminArea1) {
-        filters.push({term: {'geo.addressComponents.adminArea1': obj.adminArea1}}); 
+      if(obj.placeName) {
+        filters.push({term: {"geo.addressComponents.adminArea1": obj.placeName}});
       }
-
 
 
       if(!_(filters).isEmpty()) {
@@ -152,15 +150,24 @@ var itemQueryBuilder = function(dbConn) {
       size: limit,
       body: body
     }).then(function (resp) {
-        var hits = resp.hits.hits;
-        var responseData = _(hits).map(function(hit) {
-          var data = hit._source;
-          data.id = hit._id;
+        var responseData;
 
-          delete data.searchText;
+        if(obj.countOnly) {
+          responseData = [];
+        }
+        else {
+          var hits = resp.hits.hits;
+          responseData = _(hits).map(function(hit) {
+            var data = hit._source;
+            data.id = hit._id;
 
-          return data;
-        });
+            delete data.searchText;
+
+            return data;
+          });
+        }
+
+        
 
         cb(null, responseData, {total: resp.hits.total});
     }, function (err) {

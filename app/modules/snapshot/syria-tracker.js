@@ -1,14 +1,16 @@
 var _ = require('underscore')
   , csv = require("fast-csv")
   , fs = require('fs')
-  , item = require('../resources/item');
+  , item = require('../resources/item')
+  , moment = require('moment');
 
 var run = function(searchDB) {
   var incidents = fs.createWriteStream(__dirname + "/../../static/snapshots/syria-incidents.csv");
   var cities = fs.createReadStream(__dirname + "/data/sy-cities.csv");
   var queryBuilder = item.queryBuilder(searchDB);
 
-  incidents.write(["cityID", "cityName", "totalIncidents", "incidentDates"] + "\n");
+  
+  incidents.write(["cityID", "cityName", "totalIncidents"] + "\n");
 
   var csvStream = csv()
     .on("record", function(data){
@@ -17,12 +19,17 @@ var run = function(searchDB) {
       var searchTerms = {
         after: '2014-04-01',
         text: name,
-        limit: 500
+        limit: 10,
+        sources: "youtube_syria,facebook_syria",
+        tags: "conflict"
       };
 
       queryBuilder(searchTerms, function(err, searchData, metaData) {
-        var dates = _(searchData).pluck('publishedAt').join('||');
-        var row = [data[0], data[1], metaData.total, dates];
+        //var dates = _(searchData).pluck('publishedAt').join('||');
+        if(!metaData) {
+          console.log(searchData);
+        }
+        var row = [data[0], data[1], metaData.total];
         incidents.write(row + "\n");
       });
     })
@@ -31,6 +38,16 @@ var run = function(searchDB) {
     });
 
   cities.pipe(csvStream);
+  
+
+  /*
+  var categoryTerms = {
+    tags: 'armed-conflict,air-combat,chemical-warfare,death',
+    from: moment.subtract('days', 7)
+  }
+  */
+
+
 
   /*
   var cityJSON = require(__dirname + '/data/syria-cities.json');
@@ -39,7 +56,8 @@ var run = function(searchDB) {
     var toAdd = [feature.properties.PCODE, feature.properties.NAME_EN];
     cities.write(toAdd + "\n");
   });
-  */
+*/
+  
 };
 
 module.exports = run

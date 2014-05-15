@@ -8,6 +8,7 @@ var express = require('express')
   , logger = require('winston')
   , resources = require('./modules/resources')
   , accounts = require('./modules/accounts')
+  , pages = require("./modules/pages")
   , datasets = require('./modules/datasets')
   , stylus = require('stylus')
   , passport = require("passport")
@@ -136,6 +137,7 @@ var start = function(db) {
   resources.register("source", app, db);
 
   accounts.auth.setupRoutes(app, "auth");
+  pages.templateView.setupRoutes(app, "page");
   accounts.profile.setupRoutes(app, "profile");
 
   datasets.source.setupRoutes(app, "datasets");

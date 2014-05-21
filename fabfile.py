@@ -21,17 +21,20 @@ def staging():
     env.upstart_script = 'crisisnet.conf'
     env.nginx_conf = 'nginxconf'
     env.settings_file = 'staging.json'
+    env.port = 22
 
 
 @task
 def production():
-    env.host_string = ''
-    env.user = ''
+    env.host_string = deploy_config.PROD_HOST
+    env.user = deploy_config.PROD_USER
+    env.password = deploy_config.PROD_PASSWORD
     env.key_filename = ''
     env.branch = 'master'
-    env.upstart_script = ''
-    env.nginx_conf = ''
+    env.upstart_script = 'crisisnet.conf'
+    env.nginx_conf = 'nginxconf_prod'
     env.settings_file = 'production.json'
+    env.port = 15922
 
 
 @task

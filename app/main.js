@@ -18,9 +18,9 @@ var express = require('express')
 
 if(process.env.NODE_ENV && process.env.NODE_ENV === "production") {
   require('newrelic');
-  require('winston-syslog').Syslog;
+  var PosixSyslog = require('winston-posix-syslog').PosixSyslog;
 
-  logger.add(logger.transports.Syslog);
+  logger.add(PosixSyslog);
 }
 
 var setupDB = function() {

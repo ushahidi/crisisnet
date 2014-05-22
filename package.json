@@ -34,7 +34,7 @@
     "request": "~2.34.0",
     "fast-csv": "~0.2.5",
     "newrelic": "~1.5.5",
-    "winston-syslog": "~0.2.5"
+    "winston-posix-syslog": "0.0.7"
   },
   "devDependencies": {
     "mocha": "1.13.0",

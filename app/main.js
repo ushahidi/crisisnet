@@ -20,7 +20,7 @@ if(process.env.NODE_ENV && process.env.NODE_ENV === "production") {
   require('newrelic');
   var PosixSyslog = require('winston-posix-syslog').PosixSyslog;
 
-  logger.add(PosixSyslog);
+  logger.add(PosixSyslog, {identity: 'crisisnet'});
 }
 
 var setupDB = function() {

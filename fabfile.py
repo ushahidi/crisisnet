@@ -31,7 +31,7 @@ def production():
     env.password = deploy_config.PROD_PASSWORD
     env.key_filename = ''
     env.branch = 'master'
-    env.upstart_script = 'crisisnet.conf'
+    env.upstart_script = 'crisisnet_prod.conf'
     env.nginx_conf = 'nginxconf_prod'
     env.settings_file = 'production.json'
     env.port = 15922

@@ -16,6 +16,10 @@ var express = require('express')
   , store = require("./modules/cn-store-js");
 
 
+if(process.env.NODE_ENV && process.env.NODE_ENV === "production") {
+  require('newrelic');
+}
+
 var setupDB = function() {
   mongoose.connect(config.dbURI); 
   var db = mongoose.connection;

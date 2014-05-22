@@ -32,7 +32,8 @@
     "passport-github": "~0.1.5",
     "elasticsearch": "~2.1.4",
     "request": "~2.34.0",
-    "fast-csv": "~0.2.5"
+    "fast-csv": "~0.2.5",
+    "newrelic": "~1.5.5"
   },
   "devDependencies": {
     "mocha": "1.13.0",

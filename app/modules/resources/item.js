@@ -101,10 +101,43 @@ var itemQueryBuilder = function(dbConn) {
         filters.push(geoFilter);
       }
 
+
+      // check all the admins for this place name
       if(obj.placeName) {
-        filters.push({term: {"geo.addressComponents.adminArea1": obj.placeName}});
+        var placeName = obj.placeName.toLowerCase()
+        var or = [
+            "adminArea1",
+            "adminArea2",
+            "adminArea3",
+            "adminArea4",
+            "adminArea5"
+          ].map(function(adminArea) {
+            var termObj = {
+              term: {}
+            };
+            termObj.term["geo.addressComponents."+adminArea] = placeName;
+            return termObj;
+        });
+
+        filters.push({
+          or: or
+        });
+
       }
 
+      // make sure image property has been set
+      if(obj.hasPhoto) {
+        filters.push({
+          "exists" : { "field" : "image" }
+        });
+      }
+
+      // make sure video property has been set
+      if(obj.hasVideo) {
+        filters.push({
+          "exists" : { "field" : "video" }
+        });
+      }
 
       if(!_(filters).isEmpty()) {
         body.query.filtered.filter = {

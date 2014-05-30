@@ -3,7 +3,17 @@ var store = require("../cn-store-js")
   , clauses = require('./search-clauses');
 
 var recordRequest = function(req, res, next) {
-  var appID = req.headers.authorization.split(' ')[1];
+  var appID;
+  if(req.headers.authorization) {
+    appID = req.headers.authorization.split(' ')[1];
+  }
+  else if(req.params.apikey) {
+    appID = req.params.apikey;
+  }
+  else {
+    return next();
+  }
+
   var userID = req.user.id;
 
   var requestModel = new store.Request({

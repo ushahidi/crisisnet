@@ -34,7 +34,9 @@
     "request": "~2.34.0",
     "fast-csv": "~0.2.5",
     "newrelic": "~1.5.5",
-    "winston-posix-syslog": "0.0.7"
+    "winston-posix-syslog": "0.0.7",
+    "json2csv": "~2.2.1",
+    "passport-localapikey": "0.0.3"
   },
   "devDependencies": {
     "mocha": "1.13.0",

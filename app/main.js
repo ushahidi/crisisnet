@@ -13,6 +13,7 @@ var express = require('express')
   , stylus = require('stylus')
   , passport = require("passport")
   , BearerStrategy = require('passport-http-bearer').Strategy
+  , LocalAPIKeyStrategy = require('passport-localapikey').Strategy
   , store = require("./modules/cn-store-js");
 
 
@@ -57,6 +58,16 @@ var setupPassport = function() {
   });
 
   passport.use(new BearerStrategy(
+    function(token, done) {
+      store.User.findOne({ 'apps._id': token }, function (err, user) {
+        if (err) { return done(err); }
+        if (!user) { return done(null, false); }
+        return done(null, user, { scope: 'read' });
+      });
+    }
+  ));
+
+  passport.use(new LocalAPIKeyStrategy(
     function(token, done) {
       store.User.findOne({ 'apps._id': token }, function (err, user) {
         if (err) { return done(err); }

@@ -72,7 +72,9 @@ setup.getAll = function(queryBuilder) {
           data: csvOutput, 
           fields: commonFields.concat(adminAreas).concat(['tags','longitude','latitude'])
         }, function(err, csv) {
-          if (err) { res.json(500, err); } 
+          if (err) { res.json(500, err); }
+
+          res.attachment('crisisnet.csv'); 
           
           res.send(new Buffer(csv));
         });

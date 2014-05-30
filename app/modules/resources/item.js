@@ -44,6 +44,10 @@ var itemQueryBuilder = function(dbConn) {
       };
 
       var filters = [];
+
+      if(obj.ids) {
+        filters.push({in: {"_id": obj.ids.split(",")}});
+      }
       
       // tags
       if(obj.tags) {

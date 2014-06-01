@@ -17,6 +17,13 @@
 
         <link rel="stylesheet" href="/css/app.css">
         <script src="/js/vendor/modernizr-2.6.2.min.js"></script>
+        <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+        <style>
+          pre.prettyprint {
+            border: 0px none;
+            padding: 12px;
+          }
+        </style>
     </head>
     <body>
         <!--[if lt IE 8]>
@@ -38,6 +45,7 @@
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav">
+                <li><a href="/page/documentation">Documentation</a></li>
                 {{#user}}
                 <li><a href="/profile">Your Profile</a></li>
                 {{/user}}
@@ -49,7 +57,7 @@
                 {{/user}}
                 {{^user}}
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sign In <b class="caret"></b></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sign In/Register <b class="caret"></b></a>
                   <ul class="dropdown-menu">
                     
 

@@ -1,0 +1,21 @@
+<div class="row">
+  <h2>The Big Picture</h2>
+  <p>There are four primary types of information you'll access from the CrisisNET API: <a href="/page/item-documentation">Items</a>, <a href="/page/tag-documentation">Tags</a>, <a href="/page/source-documentation">Sources</a> and <a href="/page/license-documentation">Licenses</a>.</p>
+  <h4>Items</h4>
+  <p>An <code>item</code> is anything that happens at a time in a place. All report or event-level data in CrisisNET are represented as <code>item</code>s. This can be anything from a tornado sighting to a report of violence. You can filter <code>item</code> documents based on their location, keywords, tags, publish date, and more. A list of <code>item</code>s can be retrieved from the <code>/item</code> endpoint.</p>
+  <p><strong><a href="/page/item-documentation">View <code>item</code> documentation</a></strong></p>
+  <hr>
+  <h4>Tags</h4>
+  <p>A <code>tag</code> is metadata about an <code>item</code>. An array of <code>tag</code> objects will be assigned to the majority of <code>item</code> documents. These can be used for categorization, like <code>armed-conflict</code>, or to note that an <code>item</code> references a particular religion, ethnicity, or known group. The full list of available tags can be retrieved from the <code>/system-tag</code> endpoint.</p>
+  <p><strong><a href="/page/tag-documentation">View <code>tag</code> documentation</a></strong></p>
+  <hr>
+  <h4>Sources</h4>
+  <p>A <code>source</code> provides a stream of information to CrisisNET that we transform into <code>item</code> documents. This might be a static dataset of incident reports populated by an NGO, a social media feed like Facebook, or even data scraped from a website. <code>Item</code> documents from all <code>source</code>s are returned by default, but it is also possible to filter your stream to include only <code>item</code>s from particular <code>source</code>s. A list of available <code>source</code>s can be found at the <code>/source</code> endpoint. Data from this endpoint also includes information about how each <code>source</code> should be credited, and rules governing how data from that <code>source</code> can be used.</p>
+  <p><strong><a href="/page/source-documentation">View <code>source</code> documentation</a></strong></p>
+  <hr>
+  <h4>Licenses</h4>
+  <p>Even <code>source</code> has an associated <code>license</code>, which dictates the conditions under which its data may be used. Make sure you understand the attribution and usage guidelines for each <code>source</code> that contributes to the list of <code>item</code> documents you retrieve from the API before using that data in your application, visualization or research.</p>
+  <p><strong><a href="/page/license-documentation">View <code>license</code> documentation</a></strong></p>
+</div>
+
+<br><br>

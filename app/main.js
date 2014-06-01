@@ -153,6 +153,7 @@ var start = function(db) {
   resources.register("user", app, db);
   resources.register("system-tag", app, db);
   resources.register("source", app, db);
+  resources.register("license", app, db);
 
   accounts.auth.setupRoutes(app, "auth");
   pages.templateView.setupRoutes(app, "page");

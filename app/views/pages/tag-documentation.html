@@ -1,0 +1,68 @@
+<div class="row">
+  <h1>Tag Documentation</h1>
+  <hr>
+  <h2>Tags on Item Documents</h2>
+  <p>Every <code>Item</code> document is assigned tags to give API consumers more details about the type of crisis information it covers. A tag has <code>name</code> and <code>confidence</code> properties. For example:</p>
+  <pre class="prettyprint">
+item = {
+    content: 'Example content',
+    geo: {
+        formattedAddress: '123 Main St, Anytown, USA',
+        coords: [30.12345, -97.5678]
+    },
+    tags: [
+        {
+            name: 'tag-one',
+            confidence: 1
+        },
+        {
+            name: 'tag-two',
+            confidence: .5
+        }
+    ]
+    ...
+}
+  </code></pre>
+
+  <p>The <code>confidence</code> property indicates the likelihood that the tag has been accurately assigned.</p>
+  <p>Many data sources have their own methods for categorizing content. CrisisNET respects tag names applied by other systems, and also attempts to assign at least one (often many) "system tag(s)", so that, as often as possible, API consumers can rely on consistent categorization of content throughout the CrisisNET platform. System tags can be found at the <code>/system-tag</code> API endpoint.</p>
+  <pre class="prettyprint">
+import requests
+
+r = requests.get('http://api.crisis.net/system-tag')
+  </pre>
+
+  <hr>
+  <h2>The System Tag Endpoint</h2>
+  <p>Here's an example document returned from the <code>/system-tag</code> endpoint. This endpoint can be filtered by <code>categories</code>, as described below.</p>
+
+  <pre class="prettyprint">
+{
+  _id: "536d54cb017e3d0000c62d36",
+  categories: [
+    "conflict"
+  ],
+  createdAt: "2014-05-09T22:20:59.579Z",
+  name: "air-combat",
+  updatedAt: "2014-05-09T22:20:59.580Z"
+}
+  </pre>
+
+  <p>As you can see, each <code>tag</code> is assigned to some <code>categories</code>. These <code>categories</code> can be used as a filter when retrieving <code>tag</code> documents from the <code>/system-tag</code> endpoint. For example:</p>
+  <pre class="prettyprint">
+import requests
+
+r = requests.get('http://api.crisis.net/system-tag?categories=conflict&apikey=YOUR-API-KEY')
+print r.json()
+  </pre>
+  <p>The available <code>categories</code> are:</p>
+  <ul>
+    <li><code>conflict</code></li>
+    <li><code>disaster</code></li>
+    <li><code>ethnicity</code></li>
+    <li><code>religion</code></li>
+    <li><code>knowngroup</code></li>
+  </ul>
+</div>
+
+<br><br>

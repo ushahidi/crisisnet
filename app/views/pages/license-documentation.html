@@ -1,0 +1,44 @@
+<div class="row">
+  <h1>License Documentation</h1>
+  <hr>
+  <h2>License on Item Documents</h2>
+  <p>Every <code>item</code> document has an associated <code>license</code> to give API consumers more information about the way in which this <code>item</code> can be used. For example:</p>
+  <pre class="prettyprint">
+item = {
+    content: 'Example content',
+    geo: {
+        formattedAddress: '123 Main St, Anytown, USA',
+        coords: [30.12345, -97.5678]
+    },
+    license: 'cc'
+    ...
+}
+  </code></pre>
+  <hr>
+  <h2>The License API Endpoint</h2>
+  <p>The <code>license</code> property is a key with which you can retrieve additional information from the <code>/license</code> endpoint. For example:</p>
+  <pre class="prettyprint">
+import requests
+
+r = requests.get('http://api.crisis.net/license?key=cc&apikey=YOUR-API-KEY')
+  </code></pre>
+  <p>If you'd like to browse the full list of <code>license</code> documents, you can simply omit the <code>key</code> parameter:</p>
+  <pre class="prettyprint">
+import requests
+
+r = requests.get('http://api.crisis.net/license?apikey=YOUR-API-KEY')
+  </code></pre>
+  <p>The license endpoint returns a list of <code>license</code> documents like this:</p>
+  <pre class="prettyprint">
+{
+  createdAt: "2014-05-31T21:58:20.892Z",
+  updatedAt: "2014-05-31T21:58:20.892Z",
+  description: "A Creative Commons (CC) license is one of several public copyright licenses that enable the free distribution of an otherwise copyrighted work. A CC license is used when an author wants to give people the right to share, use and build upon a work that they have created.",
+  key: "cc",
+  name: "Creative Commons",
+  url: "http://creativecommons.org/licenses/by-nc/3.0/legalcode"
+}
+  </pre>
+</div>
+
+<br><br>

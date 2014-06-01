@@ -1,0 +1,102 @@
+<div class="row">
+  <h1>Source Documentation</h1>
+  <hr>
+  <h2>Source Document</h2>
+  <p>All <code>Item</code> documents come from a data source (a public API, a scraped web page, a static CSV file, etc). To get more information about the <code>source</code> assigned to an </code>Item</code>, you can use the <code>/source</code> endpoint. For example:</p>
+  <pre class="prettyprint">
+import requests
+
+url = 'http://api.crisis.net/source?apikey=YOUR-API-KEY'
+r = requests.get(url)
+print r.json()
+  </pre>
+  <p>Here's an example <code>source</code> document:</p>
+  <pre class="prettyprint">
+{
+  _id: "536dc57416863a6e16229af0",
+  createdAt: "2014-05-31T21:58:20.892Z",
+  description: " Violation Documentation Center in Syria is an independent, civil non-profit, non-governmental organization that started its work of monitoring and documenting the violations of human rights in Syria since April 2011. http://www.vdc-sy.info/",
+  endDate: "2015-05-29T02:03:37.260Z",
+  frequency: "repeats",
+  hasRun: true,
+  id: "536dc57416863a6e16229af0",
+  internalID: "1e44370d-6dcc-4813-b6cc-b104beeddc22",
+  isDynamic: false,
+  language: "python",
+  lastRun: "2014-05-31T20:20:37.778Z",
+  repeatsEvery: "day",
+  sourceDataType: "json",
+  sourceType: "vdc_syria",
+  startDate: "2014-05-07T00:00:00.000Z",
+  status: "active",
+  license: "cc"
+}
+  </pre>
+  <p>Most of these properties don't impact the nature of the data retrieved from a given <code>source</code>, however we've outlined the properties below that might be of interest. If a property isn't listed in the table below, you can assume it's only used internally.</p>
+  <table class="table table-striped table-bordered">
+    <thead><tr>
+    <th>Property Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    </tr></thead>
+    <tbody>
+    
+    <tr>
+    <td><em>createdAt</em></td>
+    <td>Datetime at which the source created in CrisisNET.</td>
+    <td>string in format %Y-%m-%dT%H:%M:%S.%f <small>(<a href="https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior">format code explanation</a>)</small></td>
+    </tr>
+    
+    <tr>
+    <td><em>description</em></td>
+    <td>Free-text description written by whoever wrote the code that ingests data from this source into CrisisNET.</td>
+    <td>string</td>
+    </tr>
+    
+    <tr>
+    <td><em>startDate</em></td>
+    <td>Datetime at which CrisisNET will start retrieving information from this source.</td>
+    <td>string in format %Y-%m-%dT%H:%M:%S.%f <small>(<a href="https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior">format code explanation</a>)</small></td>
+    </tr>
+
+    <tr>
+    <td><em>endDate</em></td>
+    <td>Datetime at which CrisisNET will stop retrieving information from this source.</td>
+    <td>string in format %Y-%m-%dT%H:%M:%S.%f <small>(<a href="https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior">format code explanation</a>)</small></td>
+    </tr>
+
+    <tr>
+    <td><em>frequency</em></td>
+    <td>Either <code>repeats</code> or <code>once</code>. A source that <code>repeats</code> is polled on a regular basis, but a static dataset that is no longer updated at its source will be retrieved <code>once</code>.</td>
+    <td>string</td>
+    </tr>
+
+    <tr>
+    <td><em>repeatsEvery</em></td>
+    <td>How often are sources with a <code>frequency</code> of <code>repeats</code> polled? Options are <code>minute</code>, <code>hour</code>, <code>day</code>, <code>week</code> or <code>month</code>.</td>
+    <td>string</td>
+    </tr>
+
+    <tr>
+    <td><em>sourceType</em></td>
+    <td>Often unique, but many sources may be from the same larger platform (a social network like Facebook, for example).</td>
+    <td>string</td>
+    </tr>
+
+    <tr>
+    <td><em>status</em></td>
+    <td>Can be <code>active</code>, <code>failing</code> or <code>inactive</code>. Data is only retrieved from <code>active</code> sources.</td>
+    <td>string</td>
+    </tr>
+
+    <tr>
+    <td><em>license</em></td>
+    <td>References a <code>license</code> code that you can use to lookup additional details using the <code>/license</code> endpoint.</td>
+    <td>string</td>
+    </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<br><br>

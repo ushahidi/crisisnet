@@ -30,6 +30,10 @@ var sourceSchema = mongoose.Schema({
       required: true,
       index: true
     },
+    uniqueName: {
+      type: String,
+      required: true
+    },
     sourceURL: {
       type: String,
       validate: validate('isUrl')

@@ -7,173 +7,27 @@
   <p>CrisisNET gives app developers, data-journalists and other makers fast, easy access to critical government, business, humanitarian, and crowdsourced data. Our API reduces the time it takes to access and use crisis-relevant data from hours (even days) to minutes.</p>
 </div>
 <div class="row">
-  <h2>Getting Started</h2>
+  <h2>Quickstart <small>(<a href="/page/documentation">full API docs</a>)</small></h2>
   <p>First <a href="/auth/signup">register</a> and create an app. This will generate an API key you can use to authenticate your API requests.</p>
-</div>
-<div class="row">
-  <h2>Getting Data</h2>
-  <p>Now that you have an API key, CrisisNET data is yours for the taking. You'll find more detailed instructions below, but a basic request looks like this:</p>
-  <pre><code data-language="javascript">
-$.ajax({
-  url: 'http://devapi.crisis.net/item?location=36.821946,-1.292066',
-  dataType: "json",
-  beforeSend: function(xhr) {
-    xhr.setRequestHeader('Authorization', 'Bearer ' + YOUR_TOKEN_HERE);
-  },
-  success: function (data) {
+  <p>Now that you have an API key, CrisisNET data is yours for the taking. A basic request looks like this:</p>
+  <pre class="prettyprint">
+$.get('http://api.crisis.net/item?placeName=Syria&apikey=YOUR-API-KEY',
+  function (data) {
     console.log(data);
-  }
-});
-</code></pre>
-<p>The above request is in JavaScript (using jQuery), so you'd run that from a web browser. However, because CrisisNET is a REST API, you can access it using any language that can make HTTP requests (Python, PHP, Java, etc etc). Here's the same example in Python, just for fun:</p>
-<pre><code data-language="python">
+  });
+  </pre>
+  <p>That request was made in JavaScript (using <a href="http://jquery.com/">jQuery</a>). However, because CrisisNET is an HTTP API, you can access it using any language that can make HTTP requests (Python, PHP, Java, etc). Here's the same example in Python using the excellent <a href="http://docs.python-requests.org/en/latest/">requests</a> library:</p>
+  <pre class="prettyprint">
 import requests
 
-url = 'http://devapi.crisis.net/item&location=36.821946,-1.292066'
-headers = {'Authorization': 'Bearer ' + YOUR_TOKEN_HERE}
+r = requests.get('http://api.crisis.net/item?placeName=Syria&apikey=YOUR-API-KEY')
+print r.json()
+  </pre>
+  <h2>What Kinds of Data Are Available?</h2>
+  <p>CrisisNET is designed to rapdily ingest information from any source. We build streams of data on an as-needed basis when we receive requests from the CrisisNET developer community. Interested in a particular region or type of information? You can either <a href="http://github.com/ushahidi/suckapy">contribute to our codebase</a> or <a href="mailto:jonathon@ushahidi.com">contact us</a> with details about the data you'd like and we'll make it happen.</p>
 
-r = requests.get(url, headers=headers)
-</code></pre>
+  <h2>What's Next?</h2>
+  <p>Now that you understand how to retrieve data from the API, you can start adding filters to your requests, so you only get the information that you want. Also learn about the different data sources in CrisisNET, and how to properly use and credit the information those sources provide.</p>
+  <h4><a href="/page/documentation">Check out the documentation</a></h4>
 </div>
-<div class="row">
-  <h2>Filtering Data</h2>
-  <p>As you probably noticed above, both requests are to the /item endpoint. In CrisisNET, an Item resource is very general -- basically a thing that exists in a place (usually at a specific time). This might be a tweet or Facebook status, a news item, NGO survey response, entry from a municipal dataset, etc etc. In this way we give you the power to shape your data stream in whatever way makes the most sense for your use case.</p>
-  <table class="table table-striped table-bordered">
-    <thead><tr>
-    <th>Name</th>
-    <th>Description</th>
-    <th>Type/Example</th>
-    </tr></thead>
-    <tbody>
-    <tr>
-    <td><em>before</em></td>
-    <td>Only retrieve records before this date/time.</td>
-    <td>timestamp in ISO 8601 format: <code>YYYY-MM-DDTHH:MM:SSZ</code> eg <code>before=2014-02-10T10:50:42.389Z</code>
-    </td>
-    </tr>
-    <tr>
-    <td><em>after</em></td>
-    <td>Only retrieve records after this date/time.</td>
-    <td>timestamp like <code>before</code>
-    </td>
-    </tr>
-    <tr>
-    <td><em>tags</em></td>
-    <td>Get records matching <em>all</em> of these tags (get the full list of available tags from the <code>/system-tag</code> endpoint, described below).</td>
-    <td>comma-separated list of strings eg <code>tags=health,injury</code>
-    </td>
-    </tr>
-    <tr>
-    <td><em>text</em></td>
-    <td>Full-text search on title + text properties.</td>
-    <td>url-formatted string eg <code>text=needle+in+haystack</code>
-    </td>
-    </tr>
-    <tr>
-    <td><em>location</em></td>
-    <td>Coordinates around which to search.</td>
-    <td>coordinate pair of longitude, latitude eg <code>location=36.821946,-1.292066</code>
-    </td>
-    </tr>
-    <tr>
-    <td><em>distance</em></td>
-    <td>Get records within x meters of <code>location</code>. Defaults to 200.</td>
-    <td>number in kilometers, eg <code>distance=10</code>
-    </td>
-    </tr>
-    <tr>
-    <td><em>limit</em></td>
-    <td>Limits the number of records returned. Defaults to 25, make is 500.</td>
-    <td>number, eg <code>limit=100</code>
-    </td>
-    </tr>
-    <tr>
-    <td><em>offset</em></td>
-    <td>Useful in conjunction with <code>limit</code> for paginatated through results.</td>
-    <td>number, eg <code>offset=25</code>
-    </td>
-    </tr>
-    <tr>
-    <td><em>sources</em></td>
-    <td>Limit results based on where they originated (outside of CrisisNET)</td>
-    <td>comma-separated list of strings eg <code>sources=ushahidi,gdelt</code>
-    </td>
-    </tr>
-    <tr>
-    <td><em>licenses</em></td>
-    <td>Limit to records with specific licenses. Useful if you're looking for data to use commercially, for example.</td>
-    <td>comma-separated list of strings, eg <code>licenses=commercial,odbl</code>
-    </td>
-    </tr>
-    <tr>
-    <td><em>sortBy</em></td>
-    <td>Property used to order result set. Deafults to <code>publishedAt</code>
-    </td>
-    <td>any valid property name, eg <code>sortBy=title</code>
-    </td>
-    </tr>
-    <tr>
-    <td><em>sortDirection</em></td>
-    <td>First to last (ascending) or last to first (descending). Deafults to <code>desc</code>
-    </td>
-    <td>asc for ascending or desc for descending, eg <code>sortDirection=asc</code>
-    </td>
-    </tr>
-    </tbody>
-  </table>
-</div>
-
-<hr>
-
-<div class="row">
-  <h2>System Tags</h2>
-  <p>Every <code>Item</code> document is assigned tags to give API consumers more details about the type of crisis information it covers. A tag has <code>name</code> and <code>confidence</code> properties. </p>
-<pre><code data-language="python">
-item = {
-    content: 'Example content',
-    geo: {
-        formattedAddress: '123 Main St, Anytown, USA',
-        coords: [30.12345, -97.5678]
-    },
-    tags: [
-        {
-            name: 'tag-one',
-            confidence: 1
-        },
-        {
-            name: 'tag-two',
-            confidence: .5
-        }
-    ]
-    ...
-}
-</code></pre>
-
-  <p>The <code>confidence</code> property indicates the likelihood that the tag has been accurately assigned.</p>
-  <p>Many data sources have their own methods for categorizing content. CrisisNET respects tag names applied by other systems, and also attempts to assign at least one (often many) "system tag(s)", so that, as often as possible, API consumers can rely on consistent categorization of content throughout the CrisisNET platform. System tags can be found at the <code>/system-tag</code> API endpoint.</p>
-  <pre><code data-language="python">
-import requests
-
-url = 'http://devapi.crisis.net/system-tag'
-headers = {'Authorization': 'Bearer ' + YOUR_TOKEN_HERE}
-
-r = requests.get(url, headers=headers)
-</code></pre>
-</div>
-
-<hr>
-
-<div class="row">
-  <h2>Source Information</h2>
-  <p>All <code>Item</code> documents come from a data source (a public API, a scraped web page, a static CSV file, etc). To get more information about the <code>source</code> assigned to an </code>Item</code>, you can use the <code>/source</code> API endpoint.</p>
-  <pre><code data-language="python">
-import requests
-
-url = 'http://devapi.crisis.net/source'
-headers = {'Authorization': 'Bearer ' + YOUR_TOKEN_HERE}
-
-r = requests.get(url, headers=headers)
-</code></pre>
-</div>
-
 <br><br>

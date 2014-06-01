@@ -4,7 +4,8 @@ var Item = require('./item')
   , Source = require('./source')
   , User = require('./user')
   , Request = require('./request')
-  , SystemTag = require('./system-tag');
+  , SystemTag = require('./system-tag')
+  , License = require('./license');
 
 
 module.exports = {
@@ -14,5 +15,6 @@ module.exports = {
   Source: Source,
   User: User,
   Request: Request,
-  SystemTag: SystemTag
+  SystemTag: SystemTag,
+  License: License
 }

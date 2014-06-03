@@ -33,7 +33,7 @@ var queryBuilder = function(dbConn) {
 };
 
 module.exports = {
-  middlewares: [auth.limitRoleAccess('admin')],
+  middlewares: [],
   queryBuilder: queryBuilder,
   options: {
     create: true,

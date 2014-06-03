@@ -2,7 +2,7 @@
 
 #### A firehose of worldwide crisis data.
 
-CrisisNET gives app developers, data-journalists and other makers fast, easy access to critical government, business, humanitarian, and crowdsourced data. Our API reduces the time it takes to access and use crisis-relevant data from hours (even days) to minutes.
+[CrisisNET](http://crisis.net) gives app developers, data-journalists and other makers fast, easy access to critical government, business, humanitarian, and crowdsourced data. Our API reduces the time it takes to access and use crisis-relevant data from hours (even days) to minutes.
 
 ## Getting Started
 

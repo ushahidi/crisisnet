@@ -1,6 +1,24 @@
 <div class="row">
   <h1>Account Registration</h1>
   <p class="lead">Creating an account with CrisisNET is simple. All you need is a Twitter or GitHub account.</p>
-  <p class="lead"><a href="/auth/twitter">Sign up with Twitter</a></p>
-  <p class="lead"><a href="/auth/github">Sign up with GitHub</a></p>
+  <div id="error" style="display:none" class="alert alert-danger">You need to read and accept the <a target="blank" href="/page/terms-of-service">Terms of Service</a> and <a target="blank" href="/page/code-of-conduct">Code of Conduct</a> before you can register.</div>
+  <p class="lead"><a class="must-abide" href="/auth/twitter">Sign up with Twitter</a></p>
+  <p class="lead"><a class="must-abide" href="/auth/github">Sign up with GitHub</a></p>
+  <p><input id="terms" type="checkbox"> I have read and accept the <a target="blank" href="/page/terms-of-service">Terms of Service</a> and <a target="blank" href="/page/code-of-conduct">Code of Conduct</a></p>
 </div>
+
+<script>
+  $(function() {
+    $('.must-abide').on('click', function(e) {
+      e.preventDefault();
+
+      if(!$('#terms').is(':checked')) {
+        $('#error').show();
+      }
+
+      else {
+        window.location = $(this).attr('href');
+      }
+    });
+  });
+</script>

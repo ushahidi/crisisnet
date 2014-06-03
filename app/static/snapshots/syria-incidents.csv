@@ -1,273 +1,273 @@
 cityID,cityName,totalIncidents
 SY070502,Mhambal,0
-SY070403,Janudiyeh,0
-SY070401,Badama,0
-SY070400,Jisr-Ash-Shugur,0
-SY070501,Ehsem,0
 SY070300,Harim,0
+SY070400,Jisr-Ash-Shugur,0
 SY070402,Darkosh,0
-SY070301,Dana,0
-SY070303,Kafr Takharim,1
+SY070501,Ehsem,0
 SY070302,Salqin,0
+SY070403,Janudiyeh,0
+SY070303,Kafr Takharim,1
+SY070401,Badama,1
 SY070305,Armanaz,0
-SY070002,Bennsh,0
 SY070003,Saraqab,0
-SY070201,Khan Shaykun,0
-SY070200,Ma'arrat An Nu'man,0
-SY070202,Sanjar,0
 SY070005,Maaret Tamsrin,0
-SY070203,Kafr Nobol,0
+SY070002,Bennsh,0
 SY070304,Qourqeena,0
-SY080200,Quamishli,0
+SY070200,Ma'arrat An Nu'man,0
+SY070301,Dana,3
+SY070202,Sanjar,0
+SY070201,Khan Shaykun,0
+SY070004,Teftnaz,0
+SY070203,Kafr Nobol,0
+SY070001,Abul Thohur,0
+SY070204,Tamanaah,0
+SY070006,Sarmin,2
 SY070205,Heish,0
+SY080200,Quamishli,0
+SY080201,Tal Hmis,0
 SY080203,Qahtaniyyeh,0
-SY070500,Ariha,5
-SY080300,Al-Malikeyyeh,0
+SY080202,Amuda,0
 SY080301,Jawadiyah,0
 SY080400,Ras Al Ain,0
-SY080000,Al-Hasakeh,0
 SY080401,Darbasiyah,0
-SY080202,Amuda,0
-SY080201,Tal Hmis,0
-SY070204,Tamanaah,0
-SY070001,Abul Thohur,0
+SY080300,Al-Malikeyyeh,0
+SY080000,Al-Hasakeh,0
 SY080001,Tal Tamer,0
 SY080002,Shadadah,0
+SY080302,Ya'robiyah,0
 SY080003,Markada,0
-SY070006,Sarmin,2
 SY080004,Be'r Al-Hulo Al-Wardeyyeh,0
+SY070500,Ariha,10
 SY080005,Areesheh,0
+SY070000,Idleb,203
 SY110200,Tell Abiad,0
-SY070004,Teftnaz,0
+SY110302,Jurneyyeh,0
+SY110300,Al-Thawrah,0
 SY110301,Mansura,0
 SY110201,Suluk,0
-SY110302,Jurneyyeh,0
-SY080302,Ya'robiyah,0
 SY110202,Ein Issa,0
 SY110100,Ar-Raqqa,0
-SY110300,Al-Thawrah,0
 SY110101,Sabka,0
 SY110103,Maadan,0
 SY130301,Shaqa,0
 SY130302,Ariqa,0
+SY130303,Little Sura,0
 SY130200,Salkhad,0
 SY130201,Qarayya,0
-SY130303,Little Sura,0
 SY110102,Karama,0
-SY130203,Thibeen,0
-SY130204,Milh,0
-SY130000,As-Sweida,0
-SY130002,Mashnaf,0
-SY130001,Mazra'a,0
-SY070000,Idleb,123
-SY140200,Fiq,0
-SY140201,Al-Butayhah,0
-SY140001,Khan Arnaba,0
-SY140003,Masaada,0
-SY140002,Al-Khashniyyeh,0
-SY060303,Kansaba,0
-SY060301,Salanfa,0
 SY130202,Gharyeh,0
-SY060304,Mzair'a,0
+SY130203,Thibeen,0
+SY140001,Khan Arnaba,0
+SY130000,As-Sweida,0
+SY130204,Milh,0
+SY140201,Al-Butayhah,0
+SY140200,Fiq,0
+SY130002,Mashnaf,0
+SY080006,Hole,7
+SY140002,Al-Khashniyyeh,0
+SY130001,Mazra'a,0
+SY140003,Masaada,0
+SY060303,Kansaba,0
 SY060302,Ein Et-teeneh,0
 SY060300,Al-Haffa,0
-SY060402,Fakhura,0
-SY060403,Jobet Berghal,0
-SY060400,Al-Qardaha,0
-SY080006,Hole,6
-SY060200,Jablah,0
-SY060202,Qteilbiyyeh,0
 SY060401,Harf Elmseitra,0
 SY060203,Ein Shaqaq,0
-SY060204,Dalyeh,0
 SY060201,Ein Elshaqiyeh,0
+SY060301,Salanfa,0
+SY060304,Mzair'a,0
+SY060202,Qteilbiyyeh,0
+SY060400,Al-Qardaha,0
+SY060403,Jobet Berghal,0
+SY060200,Jablah,0
+SY060402,Fakhura,0
 SY060205,Beit Yashout,0
 SY060002,Rabee'a,0
-SY060006,Hanadi,0
+SY060001,Bahlawaniyeh,0
 SY060003,Ein El-Bayda,0
 SY060004,Qastal Maaf,0
 SY060005,Kiseb,0
+SY060006,Hanadi,0
 SY020401,Aghtrin,0
-SY130300,Shahba,15
+SY060204,Dalyeh,0
 SY020402,Tall Refaat,0
-SY020203,Ar-Ra'ee,0
 SY020404,Nabul,0
+SY020203,Ar-Ra'ee,0
 SY020206,A'rima,0
-SY020200,Al Bab,0
-SY020201,Tadaf,0
-SY020205,Rasm Haram El-Imam,0
-SY020202,Dayr Hafir,0
-SY020204,Eastern Kwaires,0
-SY020700,As-Safira,0
+SY020400,A'zaz,1
 SY020405,Suran,0
+SY020200,Al Bab,0
+SY020205,Rasm Haram El-Imam,0
+SY020201,Tadaf,0
+SY130300,Shahba,20
+SY020700,As-Safira,0
 SY020703,Hajeb,0
 SY020701,Khanaser,0
+SY020202,Dayr Hafir,0
+SY020204,Eastern Kwaires,0
+SY020702,Banan,0
 SY020002,Tall Ed-daman,0
-SY020006,Hadher,0
-SY020400,A'zaz,1
-SY020005,Zarbah,0
 SY020004,Daret Azza,0
-SY020000,Jebel Saman,0
 SY020800,Jarablus,0
 SY020801,Ghandorah,0
-SY060001,Bahlawaniyeh,0
-SY020702,Banan,0
+SY020000,Jebel Saman,0
+SY140000,Quneitra,135
+SY020303,Raju,0
+SY060000,Lattakia,173
+SY020403,Mare',85
 SY020306,Ma'btali,0
 SY020305,Sheikh El-Hadid,0
 SY020302,Jandairis,0
 SY020304,Sharan,0
-SY020601,Lower Shyookh,0
-SY140000,Quneitra,113
-SY020303,Raju,0
-SY020501,Abu Qalqal,0
-SY020500,Menbij,0
-SY020600,Ain al Arab,0
 SY020301,Bulbul,0
+SY020600,Ain al Arab,0
+SY020601,Lower Shyookh,0
+SY020500,Menbij,0
+SY020501,Abu Qalqal,0
 SY020502,Al-Khafsa,0
-SY020503,Maskana,0
 SY050200,As-Suqaylabiyah,0
+SY020503,Maskana,0
 SY050201,Tell Salhib,0
+SY020005,Zarbah,0
 SY050202,Ziyara,0
 SY050203,Shat-ha,1
+SY050300,As-Salamiyeh,0
+SY020003,Haritan,111
 SY050204,Madiq Castle,0
 SY050301,Eastern Bari,0
-SY050300,As-Salamiyeh,0
 SY050302,As-Saan,0
-SY050304,Oqeirbat,0
+SY020006,Hadher,0
 SY050500,Muhradah,0
-SY050101,Suran,0
 SY050502,Karnaz,0
+SY050304,Oqeirbat,0
+SY050101,Suran,0
 SY050102,Harbanifse,0
-SY020403,Mare',46
+SY020001,Atareb,55
+SY050501,Kafr Zeita,2
 SY050401,Jeb Ramleh,0
-SY050402,Oj,0
-SY060000,Lattakia,126
-SY020003,Haritan,74
-SY020001,Atareb,34
 SY050403,Ein Halaqim,0
-SY040200,Al Quasir,0
+SY040400,Ar-Rastan,1
+SY050100,Hama,1700
+SY050402,Oj,0
 SY050404,Wadi El-oyoun,0
+SY040200,Al Quasir,0
 SY040600,Al Makhrim,0
+SY040601,Jeb Ej-Jarrah,0
 SY040500,Tadmor,0
 SY040300,Tall Kalakh,0
-SY040400,Ar-Rastan,1
+SY050103,Hamra,84
+SY020602,Sarin,13
 SY040301,Hadideh,0
-SY020602,Sarin,9
-SY040601,Jeb Ej-Jarrah,0
-SY050400,Masyaf,3
-SY040102,Kherbet Tin Noor,0
-SY050501,Kafr Zeita,2
 SY040101,Taldu,0
 SY040103,Ein Elniser,0
 SY040104,Farqalas,0
+SY040102,Kherbet Tin Noor,0
 SY040105,Raqama,0
-SY040501,Sokhneh,0
-SY040304,Hawash,15
-SY040110,Qabu,0
-SY040106,Qaryatein,0
+SY020300,Afrin,9
 SY040109,Sadad,0
-SY040100,Homs,733
+SY050400,Masyaf,5
+SY040106,Qaryatein,0
+SY040110,Qabu,0
+SY040501,Sokhneh,0
 SY040108,Hasyaa,0
-SY050103,Hamra,56
+SY040100,Homs,1096
 SY040111,Shin,1
-SY120304,Sheikh Miskine,0
 SY120300,Izra',0
 SY120305,Tassil,0
-SY020300,Afrin,7
-SY120302,Hrak,0
-SY050100,Hama,1278
+SY120304,Sheikh Miskine,0
+SY120200,As-Sanamayn,0
 SY120201,Masmiyyeh,0
 SY040107,Mahin,6
-SY120200,As-Sanamayn,0
+SY040304,Hawash,22
 SY120000,Dar'a,1
-SY120003,Ash-Shajara,0
 SY120002,Kherbet Ghazala,0
-SY120001,Busra Esh-Sham,0
-SY040401,Talbiseh,9
+SY120003,Ash-Shajara,0
 SY120004,Da'el,0
-SY120202,Ghabagheb,1
 SY120005,Mzeireb,0
-SY120303,Nawa,93
 SY120006,Jizeh,0
-SY040303,Nasra,5
-SY090201,Hajin,0
-SY090200,Abu Kamal,0
-SY120301,Jasim,70
-SY090203,Susat,0
-SY090300,Al Mayadin,0
-SY090202,Jalaa,0
-SY090301,Thiban,0
-SY030400,At Tall,0
 SY120007,Mseifra,0
-SY090103,Muhasan,0
-SY090105,Khasham,0
+SY120001,Busra Esh-Sham,0
+SY090200,Abu Kamal,0
+SY090201,Hajin,0
+SY090202,Jalaa,0
+SY090203,Susat,0
+SY040401,Talbiseh,11
+SY090300,Al Mayadin,0
+SY090301,Thiban,0
 SY090101,Kisreh,0
-SY090104,Tabni,0
+SY090103,Muhasan,0
+SY120302,Hrak,8
+SY090302,Ashara,4
 SY090100,Deir-ez-Zor,0
+SY090104,Tabni,0
+SY090105,Khasham,0
+SY120301,Jasim,82
+SY120303,Nawa,128
+SY030400,At Tall,0
+SY040303,Nasra,5
 SY090102,Basira,0
-SY030700,Az-Zabdani,0
 SY030702,Ein Elfijeh,0
 SY030704,Sarghaya,0
 SY030402,Rankus,1
 SY030300,Al Qutayfah,0
 SY030301,Jirud,0
+SY120202,Ghabagheb,12
 SY030302,Ma'loula,0
 SY030303,Raheiba,0
 SY030601,Deir Attiyeh,0
 SY030900,Markaz Darayya,0
+SY030700,Az-Zabdani,0
 SY030600,An Nabk,0
-SY090302,Ashara,4
 SY030902,Hajar Aswad,0
 SY030202,Sabe Byar,0
 SY030203,Dhameer,0
-SY030901,Sahnaya,2
-SY030205,Ghizlaniyyeh,0
-SY090106,Sur,11
-SY030206,Haran Al'awameed,0
 SY030204,Nashabiyeh,3
-SY030701,Dimas,3
-SY030703,Madaya,8
-SY030102,Babella,0
-SY030105,Kafr Batna,0
-SY030401,Sidnaya,7
-SY030201,Harasta,42
-SY030107,Qudsiya,0
+SY030205,Ghizlaniyyeh,0
+SY030901,Sahnaya,2
+SY030801,Bait Jan,0
+SY030206,Haran Al'awameed,0
 SY030802,Sa'sa',0
+SY030102,Babella,0
+SY090106,Sur,14
+SY030105,Kafr Batna,0
+SY030107,Qudsiya,0
+SY030701,Dimas,3
+SY030703,Madaya,9
+SY030104,Maliha,767
+SY030800,Qatana,5
 SY030501,Esal El-Ward,0
 SY100500,Sheikh Badr,0
-SY030801,Bait Jan,0
 SY100502,Qumseyyeh,0
+SY030401,Sidnaya,10
+SY030201,Harasta,59
 SY100501,Baramanet Elmashayekh,0
-SY100200,Banyas,0
 SY100202,Anaza,0
-SY030101,Kisweh,3
+SY030103,Jaramana,23
+SY100201,Rawda,2
+SY100200,Banyas,0
+SY030200,Duma,43
+SY030106,Arbin,21
 SY100204,Hamam Wasil,0
+SY030500,Yabroud,1
 SY100205,Tawahin,0
 SY100206,Taleen,0
 SY100400,Dreikish,0
-SY030104,Maliha,478
-SY100201,Rawda,0
-SY100401,Jneinet Raslan,0
 SY100402,Hamin,0
+SY100401,Jneinet Raslan,0
 SY100403,Dweir Raslan,0
+SY030101,Kisweh,8
 SY100301,Mashta Elhiu,0
-SY030103,Jaramana,15
 SY100302,Bariqiyeh,0
-SY100303,Sibbeh,0
-SY100304,Sisniyyeh,0
 SY100305,Ras El-Khashufeh,0
 SY100001,Arwad,0
 SY100002,Hameidiyyeh,0
 SY100003,Kherbet Elma'aza,0
-SY100004,Soda Khawabi,0
 SY100005,Kareemeh,0
-SY100006,Safsafa,1
-SY030500,Yabroud,1
 SY050303,Saboura,1
-SY030800,Qatana,5
-SY100203,Qadmous,4
-SY100000,Tartous,51
-SY010000,Damascus,1862
-SY030200,Duma,36
-SY100300,Safita,11
-SY030106,Arbin,12
+SY100006,Safsafa,2
+SY100004,Soda Khawabi,0
+SY100304,Sisniyyeh,0
+SY100303,Sibbeh,0
+SY100000,Tartous,77
+SY010000,Damascus,2864
+SY100203,Qadmous,11
+SY100300,Safita,12

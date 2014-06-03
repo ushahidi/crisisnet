@@ -69,9 +69,9 @@ var itemQueryBuilder = function(dbConn) {
         filters.push({in: {source: obj.sources.split(",")}});
       }
 
-      // license
-      if(obj.license) {
-        filters.push({term: {license: obj.license}});
+      // licenses
+      if(obj.licenses) {
+        filters.push({in: {source: obj.licenses.split(",")}});
       }
 
       // lifespan

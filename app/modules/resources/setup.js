@@ -27,7 +27,8 @@ setup.getAll = function(queryBuilder) {
             'license',
             'fromURL',
             'summary',
-            'lifespan'
+            'lifespan',
+            'totalAffectedPersons'
           ];
 
           var adminAreas = [

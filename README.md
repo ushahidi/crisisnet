@@ -13,11 +13,8 @@ Register for an API key using [our developer portal](http://devapi.crisis.net/).
 Now that you have an API key, CrisisNET data is yours for the taking. You'll find more detailed instructions below, but a basic request looks like this:
 
     $.ajax({
-      url: 'http://devapi.crisis.net/item?location=36.821946,-1.292066',
+      url: 'http://api.crisis.net/item?apiKey='+ YOUR_TOKEN_HERE+'location=36.821946,-1.292066',
       dataType: "json",
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('Authorization', 'Bearer ' + YOUR_TOKEN_HERE);
-      },
       success: function (data) {
         console.log(data);
       }
@@ -90,3 +87,81 @@ Name | Description | Type/Example
           "remoteID": "437226684211662848"
       }
     ]
+
+
+### Local Env setup:
+--
+
+Requirements:
+- Node.js 10.25+
+- Python 2.7+
+
+Setup Mongo, ElasticSearch and Redis
+    
+    brew install mongodb
+    brew install elasticsearch
+    brew install redis
+
+Start databases
+    
+    redis-server /usr/local/etc/redis.conf
+    mongod
+    elasticsearch --config=/usr/local/opt/elasticsearch/config/elasticsearch.yml
+
+Get Project Code
+    
+    git clone https://github.com/ushahidi/suckapy-vs.git
+    git clone https://github.com/ushahidi/current-engine-api-vs.git
+    git clone https://github.com/ushahidi/scheduler-vs.git
+    git clone https://github.com/ushahidi/grimlock-vs.git
+
+Install dependencies
+    
+    cd current-engine-api-vs
+    npm install
+
+    cd ../scheduler
+    npm install
+
+    cd ../grimlock
+    virtualenv venv --distribute
+    source venv/bin/activate
+    pip install -r requirements.txt
+
+    cd ../suckapy
+    virtualenv venv --distribute
+    source venv/bin/activate
+    pip install -r requirements.txt
+
+
+Running apps
+--
+cd into the project directory for the app you'd like to run and...
+
+Node apps
+    
+    npm run-script dev-server
+
+Python apps (make sure to start your virtualenv source venv/bin/activate)
+    
+    python src/app.py
+
+
+Testing apps
+--
+Node projects
+    
+    npm run-script run-test
+
+Python projects
+    
+    nosestests
+
+
+Deploy code:
+--
+cd into the project you want to deploy
+    
+    fab staging deploy:master
+
+(that means, deploy the master branch to the staging server)

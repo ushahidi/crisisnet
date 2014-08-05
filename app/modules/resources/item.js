@@ -68,6 +68,9 @@ var itemQueryBuilder = function(dbConn) {
       if(obj.authorID) {
         filters.push({term: {"author.remoteID": obj.authorID}});
       }
+      if(obj.authorName) {
+        filters.push({term: {"author.name": obj.authorName}});
+      }
 
       // sources
       if(obj.sources) {

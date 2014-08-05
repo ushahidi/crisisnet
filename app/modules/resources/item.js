@@ -64,6 +64,11 @@ var itemQueryBuilder = function(dbConn) {
         filters.push({in: {"tags.name": obj.tags.split(",")}});
       }
 
+      // author
+      if(obj.authorID) {
+        filters.push({term: {"author.remoteID": obj.authorID}});
+      }
+
       // sources
       if(obj.sources) {
         filters.push({in: {source: obj.sources.split(",")}});

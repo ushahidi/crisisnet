@@ -89,12 +89,13 @@ Name | Description | Type/Example
     ]
 
 
-### Local Env setup:
---
+## Local Env setup:
 
-Requirements:
+### Requirements:
 - Node.js 10.25+
 - Python 2.7+
+
+### MacOS
 
 Setup Mongo, ElasticSearch and Redis
     
@@ -107,6 +108,23 @@ Start databases
     redis-server /usr/local/etc/redis.conf
     mongod
     elasticsearch --config=/usr/local/opt/elasticsearch/config/elasticsearch.yml
+
+Continue with Get Project Code
+
+
+### Linux (Debian Testing/jessie)
+
+Setup Mongo, ElasticSearch and Redis
+    
+    sudo apt-get install mongodb redis-server
+    
+Add the elasticsearhc repo to your environment and install using the instructions [on the elasticsearch site](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/setup-repositories.html)
+
+Start databases
+    
+    redis-server /etc/redis/redis.conf
+    mongod
+    sudo /usr/share/elasticsearch/bin/elasticsearch --config=/etc/elasticsearch/elasticsearch.yml
 
 Get Project Code
     

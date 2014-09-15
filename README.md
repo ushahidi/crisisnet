@@ -110,14 +110,14 @@ Start databases
 
 Get Project Code
     
-    git clone https://github.com/ushahidi/suckapy-vs.git
-    git clone https://github.com/ushahidi/current-engine-api-vs.git
-    git clone https://github.com/ushahidi/scheduler-vs.git
-    git clone https://github.com/ushahidi/grimlock-vs.git
+    git clone https://github.com/ushahidi/suckapy.git
+    git clone https://github.com/ushahidi/crisisnet.git
+    git clone https://github.com/ushahidi/scheduler.git
+    git clone https://github.com/ushahidi/grimlock.git
 
 Install dependencies
     
-    cd current-engine-api-vs
+    cd crisisnet
     npm install
 
     cd ../scheduler

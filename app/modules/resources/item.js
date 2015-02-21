@@ -161,6 +161,14 @@ var itemQueryBuilder = function(dbConn) {
         });
       }
 
+      // make sure image property has been set
+      if(obj.hasGeo) {
+        filters.push({
+          "exists" : { "field" : "geo.coords" }
+        });
+      }
+
+
       if(!_(filters).isEmpty()) {
         body.query.filtered.filter = {
           and: filters

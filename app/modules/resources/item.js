@@ -187,11 +187,12 @@ var itemQueryBuilder = function(dbConn) {
 
       
       // free text
-      var searchText = obj.text;
-      if(_.isArray(obj.text)) {
+      /*
+      var searchText = obj.text.split(',').join(' ');
+      if(_.isArray(searchText)) {
         searchText = obj.text.join(' ');
       }
-
+      */
       if(obj.text) {
         body.query.filtered.query = {
           match: { 

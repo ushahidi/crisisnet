@@ -187,10 +187,18 @@ var itemQueryBuilder = function(dbConn) {
 
       
       // free text
+      var searchText = obj.text;
+      if(_.isArray(obj.text)) {
+        searchText = obj.text.join(' ');
+      }
+
       if(obj.text) {
         body.query.filtered.query = {
           match: { 
-            searchText: obj.text
+            searchText: {
+              query: searchText,
+              operator: 'and'
+            }
           }
         }
       }

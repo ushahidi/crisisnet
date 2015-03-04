@@ -197,7 +197,7 @@ var itemQueryBuilder = function(dbConn) {
         body.query.filtered.query = {
           match: { 
             searchText: {
-              query: searchText,
+              query: obj.text,
               operator: 'and'
             }
           }

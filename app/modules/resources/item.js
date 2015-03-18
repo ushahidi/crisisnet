@@ -46,6 +46,10 @@ var itemQueryBuilder = function(dbConn) {
       }
     }
 
+    else if(obj.rawQuery) {
+      body = obj.rawQuery;
+    }
+
     else {
       body = {
         query: {
